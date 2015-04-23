@@ -21,6 +21,8 @@ public class Player {
 		gold = 0;
 		buys = 0;
 		hand = new ArrayList<Card>();
+		graveyard = new ArrayList<Card>();
+		deck = new ArrayList<Card>();
 	}
 
 
@@ -43,7 +45,6 @@ public class Player {
 		this.hand = hand;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void drawCard()
 	{
 		if(deck.size() > 0 )
@@ -54,13 +55,28 @@ public class Player {
 		
 		if(graveyard.size() > 0)
 		{
-			deck = (ArrayList<Card>) graveyard.clone();
+			deck.addAll(graveyard);
 			graveyard.clear();
 			shuffleDeck();
+			drawCard();
 		}
 		
 		
 	}
+	
+	public void drawCards(int amount) {
+		for(int i = 0; i < amount;i++)
+		{
+			drawCard();
+		}
+	}
+
+
+	public void discardCards() {
+		graveyard.addAll(hand);
+		hand.clear();
+	}
+
 	
 	public boolean playCard(Card card)
 	{
@@ -78,6 +94,13 @@ public class Player {
 	public void addCardToGraveyard(Card card)
 	{
 		graveyard.add(card);
+	}
+	
+
+	public void shuffleGraveyardIntoDeck() {
+		deck.addAll(graveyard);
+		graveyard.clear();
+		shuffleDeck();
 	}
 	
 	public void shuffleDeck()
@@ -143,6 +166,10 @@ public class Player {
 	{
 		buys = buys + amount;
 	}
+
+
+
+
 
 	
 }

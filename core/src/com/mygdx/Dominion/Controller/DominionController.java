@@ -52,6 +52,9 @@ public class DominionController {
 	
 	public void endTurn()
 	{
+		game.putPlayedInCardsInGraveyard(currentPlayer);
+		getTurnPlayer().discardCards();
+		getTurnPlayer().drawCards(5);
 		//TODO: Win
 		if(currentPlayer == game.getPlayerCount()-1)
 			currentPlayer = 0;

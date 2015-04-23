@@ -14,6 +14,15 @@ public class Board {
 	
 	public Board()
 	{
+		
+		players = new ArrayList<Player>();
+		buyableActionCards = new IntegerCardList();
+		buyableVictoryCards = new IntegerCardList();
+		buyableTreasureCards = new IntegerCardList();
+		completeCardSet = new ArrayList<Card> ();
+		playedCards = new ArrayList<Card>();
+		
+		
 		//Create Players
 		for(int i = 0; i < Options.getInstance().getPlayerCount();i++)
 		{
@@ -22,11 +31,37 @@ public class Board {
 		assert(Options.getInstance().getPlayerCount() == players.size());
 		
 		//Create Cards
-		completeCardSet.addAll(GameUtils.getCardSet("Default"));
+		completeCardSet.addAll(GameUtils.getCardSet("default"));
 		
 		//Create Buyable Cards
 		createBuyableCards();
 		
+		//Initializes Decks for Players with 7 Coppers 3 Estates
+		initializeDecksForPlayers();
+		
+		//initial card Draw
+		for(Player p : players)
+		{
+			p.drawCards(5);
+		}
+		
+	}
+
+	private void initializeDecksForPlayers() {
+		
+		for(Player p : players)
+		{
+			for(int i = 0; i < 7; i++)
+			{
+				p.addCardToGraveyard(new Card(GameUtils.CARD_COPPER));
+			}
+			for(int i = 0; i < 3; i++)
+			{
+				p.addCardToGraveyard(new Card(GameUtils.CARD_ESTATE));
+			}
+			p.shuffleGraveyardIntoDeck();
+	
+		}
 	}
 
 	private void createBuyableCards() {
@@ -47,6 +82,7 @@ public class Board {
 				randCards.add(c);
 			}
 		}
+		System.out.println(randCards.size());
 		
 		for(int i = 0; i < numberOfBuyableActionCards; i++)
 		{
@@ -70,6 +106,14 @@ public class Board {
 	public int getPlayerCount()
 	{
 		return players.size();
+	}
+
+	public void putPlayedInCardsInGraveyard(int currentPlayer) {
+		Player p = players.get(currentPlayer);
+		for(Card c: playedCards)
+		{
+			p.addCardToGraveyard(c);
+		}
 	}
 
 	
