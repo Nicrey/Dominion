@@ -9,7 +9,6 @@ public class Board {
 	private IntegerCardList buyableActionCards;
 	private IntegerCardList buyableVictoryCards;
 	private IntegerCardList buyableTreasureCards;
-	private ArrayList<Integer> remainingCards;
 	private ArrayList<Card> completeCardSet;
 	private int numberOfBuyableActionCards = 1;
 	
@@ -58,8 +57,20 @@ public class Board {
 		
 		
 	}
-	
 
+	public void addCardToBoard(Card c) {
+		playedCards.add(c);
+	}
+	
+	public Player getPlayer(int index)
+	{
+		return players.get(index);
+	}
+
+	public int getPlayerCount()
+	{
+		return players.size();
+	}
 
 	
 		

@@ -19,6 +19,14 @@ public class Card {
 		this.effect = effect;
 	}
 	
+	public Card(Card c)
+	{
+		this.name = c.name;
+		this.texture = c.texture;
+		this.cost = c.cost;
+		this.type = c.type;
+		this.effect = c.effect;
+	}
 	
 	
 	public String getName() {

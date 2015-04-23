@@ -94,6 +94,16 @@ public class Player {
 	public void setActions(int actions) {
 		this.actions = actions;
 	}
+	
+	public void addActions(int amount)
+	{
+		actions = actions+amount;
+	}
+	
+	public void reduceActions()
+	{
+		actions= actions-1;
+	}
 
 
 	public int getGold() {
@@ -104,7 +114,16 @@ public class Player {
 	public void setGold(int gold) {
 		this.gold = gold;
 	}
+	
+	public void addGold(int amount)
+	{
+		gold = gold + amount;
+	}
 
+	public void reduceGold(int amount)
+	{
+		gold = gold-amount;
+	}
 
 	public int getBuys() {
 		return buys;
@@ -115,5 +134,15 @@ public class Player {
 		this.buys = buys;
 	}
 	
+	public void reduceBuys()
+	{
+		buys = buys-1;
+	}
+	
+	public void addBuys(int amount)
+	{
+		buys = buys + amount;
+	}
+
 	
 }
