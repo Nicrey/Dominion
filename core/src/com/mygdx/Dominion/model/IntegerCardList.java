@@ -42,6 +42,15 @@ public class IntegerCardList {
 		integerList.set(cardList.indexOf(c), i);
 	}
 	
+	public Card getCard(int i)
+	{
+		return cardList.get(i);
+	}
+	
+	public int getRemainingCards(int i)
+	{
+		return integerList.get(i);
+	}
 	
 	
 }
