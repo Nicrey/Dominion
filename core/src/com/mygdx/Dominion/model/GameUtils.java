@@ -1,5 +1,8 @@
 package com.mygdx.Dominion.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.badlogic.gdx.graphics.Texture;
 
 public class GameUtils {
@@ -13,10 +16,12 @@ public class GameUtils {
 	public static final int DEFENSECARDS  = 3;
 	
 	//Types of Cards
-	public static final int ACTION   = 0;
-	public static final int TREASURE = 1;
-	public static final int VICTORY  = 2;
-	public static final int CURSE 	 = 3; 
+	//When adding new Cardtypes change Board methods : createBuyableCards !
+	//And IntegerCardList!
+	public static final int CARDTYPE_ACTION   = 0;
+	public static final int CARDTYPE_TREASURE = 1;
+	public static final int CARDTYPE_VICTORY  = 2;
+	public static final int CARDTYPE_CURSE 	 = 3; 
 	//Name of Cards-----------------------------------------------------------------------------------------------------//
 
 	//Action Cards
@@ -62,13 +67,33 @@ public class GameUtils {
 	//--------------------------------------------------------------------------------------------------------------//
 	//Cards---------------------------------------------------------------------------------------------------------//
 	//Action Cards
-	public static final Card CARD_VILLAGE = new Card(NAME_VILLAGE, TEXTURE_VILLAGE, COST_VILLAGE, ACTION, EFFECT_VILLAGE);
+	public static final Card CARD_VILLAGE = new Card(NAME_VILLAGE, TEXTURE_VILLAGE, COST_VILLAGE, CARDTYPE_ACTION, EFFECT_VILLAGE);
 	
 	//Treasure Cards
-	public static final Card CARD_COPPER = new Card(NAME_COPPER, TEXTURE_COPPER, COST_COPPER, TREASURE, EFFECT_COPPER);
+	public static final Card CARD_COPPER = new Card(NAME_COPPER, TEXTURE_COPPER, COST_COPPER, CARDTYPE_TREASURE, EFFECT_COPPER);
 	
 	//Victory Cards
-	public static final Card CARD_ESTATE = new Card(NAME_ESTATE, TEXTURE_ESTATE, COST_ESTATE, VICTORY, EFFECT_ESTATE);
+	public static final Card CARD_ESTATE = new Card(NAME_ESTATE, TEXTURE_ESTATE, COST_ESTATE, CARDTYPE_VICTORY, EFFECT_ESTATE);
+
+	public static Collection<? extends Card> getCardSet(String string) {
+		ArrayList<Card> cardSet = new ArrayList<Card>();
+		
+		if(string.equals("default"))
+		{
+			//Add Gold Cards
+			cardSet.add(CARD_COPPER);
+			
+			//Add Action Cards
+			cardSet.add(CARD_VILLAGE);
+			
+			//Add Victory Cards
+			cardSet.add(CARD_ESTATE);
+		}
+		
+		
+		
+		return cardSet;
+	}
 	
 
 }

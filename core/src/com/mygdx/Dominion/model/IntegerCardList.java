@@ -1,0 +1,47 @@
+package com.mygdx.Dominion.model;
+
+import java.util.ArrayList;
+
+public class IntegerCardList {
+
+	private ArrayList<Card> cardList;
+	private ArrayList<Integer> integerList;
+	
+	public IntegerCardList()
+	{
+		cardList = new ArrayList<Card>();
+		integerList = new ArrayList<Integer>();
+	}
+	
+	public void addCard(Card c)
+	{
+		cardList.add(c);
+		if(c.getType() == GameUtils.CARDTYPE_ACTION)
+		{
+			integerList.add(10);
+		}
+		if(c.getType() == GameUtils.CARDTYPE_VICTORY)
+		{
+			integerList.add(12);
+		}
+		if(c.getType() == GameUtils.CARDTYPE_CURSE)
+		{
+			integerList.add(30);
+		}
+		if(c.getType() == GameUtils.CARDTYPE_TREASURE)
+		{
+			integerList.add(30);
+		}
+		
+	}
+	
+	public void reduceCard(Card c)
+	{
+		int i = integerList.get(cardList.indexOf(c));
+		i--;
+		integerList.set(cardList.indexOf(c), i);
+	}
+	
+	
+	
+}
