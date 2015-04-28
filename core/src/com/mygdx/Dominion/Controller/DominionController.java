@@ -1,5 +1,7 @@
 package com.mygdx.Dominion.Controller;
 
+import java.util.ArrayList;
+
 import com.mygdx.Dominion.UI.DominionUI;
 import com.mygdx.Dominion.model.Board;
 import com.mygdx.Dominion.model.Card;
@@ -8,9 +10,9 @@ import com.mygdx.Dominion.model.Player;
 
 public class DominionController {
 
-	private static final int ACTIONCARDPHASE = 0;
-	private static final int TREASURECARDPHASE = 1;
-	private static final int ENDPHASE = 2;
+	public static final int ACTIONCARDPHASE = 0;
+	public static final int TREASURECARDPHASE = 1;
+	public static final int ENDPHASE = 2;
 	
 	private DominionUI view; 
 	private int currentPlayer;
@@ -24,6 +26,7 @@ public class DominionController {
 		this.view = view;
 		game = new Board();
 		currentPlayer = 0;
+		resetPlayerAttributes();
 	}
 	
 	
@@ -38,15 +41,19 @@ public class DominionController {
 		if(state == ACTIONCARDPHASE)
 		{
 			state = TREASURECARDPHASE;
+			return;
 		}
 		if(state == TREASURECARDPHASE)
 		{
 			state = ENDPHASE;
+			return;
 		}
 		if(state == ENDPHASE)
 		{
 			state = ACTIONCARDPHASE;		
+			return;
 		}
+		
 	}
 	
 	
@@ -63,6 +70,14 @@ public class DominionController {
 		
 		state = ACTIONCARDPHASE;
 		resetPlayerAttributes();
+	}
+	
+
+	public void endActions() {
+		System.out.println("EndActions");
+		System.out.println(state);
+		if(state == ACTIONCARDPHASE)
+			updateState();
 	}
 	
 
@@ -90,9 +105,11 @@ public class DominionController {
 		EffectParser.resolveEffect(game, c,currentPlayer);
 		getTurnPlayer().playCard(c);
 		game.addCardToBoard(c);
-		getTurnPlayer().reduceActions();
 		
-		if(getTurnPlayer().getActions() == 0)
+		if(c.getType() == GameUtils.CARDTYPE_ACTION)
+			getTurnPlayer().reduceActions();
+		
+		if(getTurnPlayer().getActions() == 0 && state == ACTIONCARDPHASE)
 		{
 			updateState();
 		}
@@ -128,5 +145,38 @@ public class DominionController {
 	{
 		return game.getPlayer(currentPlayer);
 	}
+
+	public int getState()
+	{
+		return state;
+	}
+
+
+	public void playTreasures() {
+		ArrayList<Card> treasures;
+		treasures = getTurnPlayer().getTreasureCardsInHand();
+		for(Card c: treasures)
+		{
+			cardPlayed(c);
+		}
+	}
+
+
+	public ArrayList<Card> getBoard() {
+		return game.getBoard();
+	}
+
+
+	public boolean isCardPlayable(Card card) {
+		if(state == ACTIONCARDPHASE && card.getType() == GameUtils.CARDTYPE_ACTION)
+		{
+			return true;
+		}
+		if(state == TREASURECARDPHASE && card.getType() == GameUtils.CARDTYPE_TREASURE)
+			return true;
+		return false;
+	}
+
+
 	
 }

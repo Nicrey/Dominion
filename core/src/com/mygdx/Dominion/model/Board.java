@@ -114,6 +114,11 @@ public class Board {
 		{
 			p.addCardToGraveyard(c);
 		}
+		playedCards.clear();
+	}
+
+	public ArrayList<Card> getBoard() {
+		return playedCards;
 	}
 
 	

@@ -168,6 +168,19 @@ public class Player {
 	}
 
 
+	public ArrayList<Card> getTreasureCardsInHand() {
+		ArrayList<Card> ret = new ArrayList<Card>();
+		for(Card c: hand)
+		{
+			if(c.getType() == GameUtils.CARDTYPE_TREASURE)
+			{
+				ret.add(c);
+			}
+		}
+		return ret;
+	}
+
+
 
 
 
