@@ -181,6 +181,19 @@ public class Player {
 	}
 
 
+	public ArrayList<Card> getActionCardsInHand() {
+		ArrayList<Card> ret = new ArrayList<Card>();
+		for(Card c: hand)
+		{
+			if(c.getType() == GameUtils.CARDTYPE_ACTION)
+			{
+				ret.add(c);
+			}
+		}
+		return ret;
+	}
+
+
 
 
 

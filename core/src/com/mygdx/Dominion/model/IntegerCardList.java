@@ -1,6 +1,9 @@
 package com.mygdx.Dominion.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 public class IntegerCardList {
 
@@ -15,6 +18,7 @@ public class IntegerCardList {
 	
 	public void addCard(Card c)
 	{
+		
 		cardList.add(c);
 		if(c.getType() == GameUtils.CARDTYPE_ACTION)
 		{
@@ -51,6 +55,11 @@ public class IntegerCardList {
 	{
 		return integerList.get(i);
 	}
-	
+
+	public int size() {
+		return cardList.size();
+	}
+
+
 	
 }

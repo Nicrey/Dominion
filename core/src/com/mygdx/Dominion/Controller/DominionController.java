@@ -18,6 +18,7 @@ public class DominionController {
 	private int currentPlayer;
 	private Board game;
 	private int state;
+	private EffectParser parser;
 	
 	
 	public DominionController(DominionUI view )
@@ -27,6 +28,7 @@ public class DominionController {
 		game = new Board();
 		currentPlayer = 0;
 		resetPlayerAttributes();
+		parser = new EffectParser(this);
 	}
 	
 	
@@ -102,7 +104,7 @@ public class DominionController {
 		{
 			return;
 		}
-		EffectParser.resolveEffect(game, c,currentPlayer);
+		parser.resolveEffect(c);
 		getTurnPlayer().playCard(c);
 		game.addCardToBoard(c);
 		
@@ -135,6 +137,7 @@ public class DominionController {
 		}
 		
 		getTurnPlayer().addCardToGraveyard(new Card(c));
+		game.buyCard(c);
 		getTurnPlayer().reduceBuys();
 		getTurnPlayer().reduceGold(c.getCost());
 	}
@@ -175,6 +178,19 @@ public class DominionController {
 		if(state == TREASURECARDPHASE && card.getType() == GameUtils.CARDTYPE_TREASURE)
 			return true;
 		return false;
+	}
+
+
+	public Board getGameData() {
+		return game;
+	}
+
+
+	public void update() {
+		if(state == ACTIONCARDPHASE && getTurnPlayer().getActionCardsInHand().size() == 0)
+			updateState();
+
+		
 	}
 
 

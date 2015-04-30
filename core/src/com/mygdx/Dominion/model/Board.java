@@ -9,6 +9,8 @@ public class Board {
 	private IntegerCardList buyableActionCards;
 	private IntegerCardList buyableVictoryCards;
 	private IntegerCardList buyableTreasureCards;
+
+
 	private ArrayList<Card> completeCardSet;
 	private int numberOfBuyableActionCards = 1;
 	
@@ -90,7 +92,19 @@ public class Board {
 			buyableActionCards.addCard(randCards.remove(random));
 		}
 		
-		
+		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
+		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
+		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
+		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
+		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
+		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
+		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
+		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
+		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
+		buyableTreasureCards.addCard(GameUtils.CARD_COPPER);
+		buyableTreasureCards.addCard(GameUtils.CARD_COPPER);
+		buyableVictoryCards.addCard(GameUtils.CARD_ESTATE);
+		buyableVictoryCards.addCard(GameUtils.CARD_ESTATE);
 		
 	}
 
@@ -121,7 +135,26 @@ public class Board {
 		return playedCards;
 	}
 
-	
+	public IntegerCardList getBuyableVictoryCards() {
+		return buyableVictoryCards;
+	}
+
+	public IntegerCardList getBuyableActionCards() {
+		return buyableActionCards;
+	}
+
+	public IntegerCardList getBuyableTreasureCards() {
+		return buyableTreasureCards;
+	}
+
+	public void buyCard(Card c) {
+		if(c.getType() == GameUtils.CARDTYPE_ACTION)
+			buyableActionCards.reduceCard(c);
+		if(c.getType() == GameUtils.CARDTYPE_TREASURE)
+			buyableTreasureCards.reduceCard(c);	
+		if(c.getType() == GameUtils.CARDTYPE_VICTORY)
+			buyableVictoryCards.reduceCard(c);
+	}
 		
 	
 }

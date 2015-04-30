@@ -5,11 +5,23 @@ import com.mygdx.Dominion.model.Card;
 import com.mygdx.Dominion.model.Player;
 
 public class EffectParser {
-
 	
-	public static void resolveEffect(Board board, Card c, int currentPlayer)
+	private DominionController game;
+	
+	public EffectParser(DominionController game)
 	{
-		Player p =board.getPlayer(currentPlayer);
+		this.game = game;
+	}
+	
+	public void resolveEffect(Card c)
+	{
+		Player p = game.getTurnPlayer();
 		p.addActions(2);
+		
+	}
+	
+	public void resolveSingleEffect(String s)
+	{
+		
 	}
 }
