@@ -12,9 +12,9 @@ public class FloatingCard {
 	public FloatingCard(Card card,float x, float y )
 	{
 		cardRect = new Rectangle();
-		cardRect.height = UIConfig.cHeight;
-		cardRect.width = UIConfig.cWidth;
-		cardRect.setPosition(x-UIConfig.cWidth/2, UIConfig.height-y-UIConfig.cHeight/2);
+		cardRect.height = UIConfig.floatingCardHeight;
+		cardRect.width = UIConfig.floatingCardWidth;
+		cardRect.setPosition(x-cardRect.width/2, UIConfig.height-y-cardRect.height/2);
 		this.card = card;
 	}
 
@@ -35,7 +35,7 @@ public class FloatingCard {
 	}
 
 	public void updatePosition(float x, float y) {
-		cardRect.setPosition(x-UIConfig.cWidth/2, UIConfig.height-y-UIConfig.cHeight/2);
+		cardRect.setPosition(x-cardRect.width/2, UIConfig.height-y-cardRect.height/2);
 	}
 	
 }

@@ -9,6 +9,10 @@ public class Board {
 	private IntegerCardList buyableActionCards;
 	private IntegerCardList buyableVictoryCards;
 	private IntegerCardList buyableTreasureCards;
+	private int buyableCurseCards;
+	private int emptiedCardStacks = 0;
+	private boolean provincesEmpty = false;;
+
 
 
 	private ArrayList<Card> completeCardSet;
@@ -84,6 +88,10 @@ public class Board {
 				randCards.add(c);
 			}
 		}
+		
+		buyableCurseCards = 30;
+		
+		
 		System.out.println(randCards.size());
 		
 		for(int i = 0; i < numberOfBuyableActionCards; i++)
@@ -148,13 +156,63 @@ public class Board {
 	}
 
 	public void buyCard(Card c) {
+		boolean empty = false;
 		if(c.getType() == GameUtils.CARDTYPE_ACTION)
-			buyableActionCards.reduceCard(c);
+		{
+			buyableActionCards.reduceCard(c);	
+			if(buyableActionCards.getRemainingCards(c) == 0)
+				empty = true;
+		}
 		if(c.getType() == GameUtils.CARDTYPE_TREASURE)
+		{
 			buyableTreasureCards.reduceCard(c);	
+			if(buyableTreasureCards.getRemainingCards(c) == 0)
+				empty = true;
+		}
 		if(c.getType() == GameUtils.CARDTYPE_VICTORY)
+		{
 			buyableVictoryCards.reduceCard(c);
+			if(buyableVictoryCards.getRemainingCards(c) == 0)
+				empty = true;
+			if(c == GameUtils.CARD_PROVINCE && buyableVictoryCards.getRemainingCards(c) == 0)
+				this.provincesEmpty = true;
+		}
+		if(empty)
+			this.emptiedCardStacks++;
+		
+	}
+
+	public int getRemainingCards(Card c) {
+		if(c.getType() == GameUtils.CARDTYPE_ACTION)
+			return buyableActionCards.getRemainingCards(c);
+		if(c.getType() == GameUtils.CARDTYPE_TREASURE)
+			return buyableTreasureCards.getRemainingCards(c);
+		if(c.getType() == GameUtils.CARDTYPE_VICTORY)
+			return buyableVictoryCards.getRemainingCards(c);
+		if(c.getType() == GameUtils.CARDTYPE_CURSE)
+			return buyableCurseCards;
+		return 0;
 	}
 		
-	
+
+	public int getEmptiedCardStacks() {
+		return emptiedCardStacks;
+	}
+
+	public boolean isProvincesEmpty() {
+		return provincesEmpty;
+	}
+
+	public ArrayList<Player> getPlayers() {
+		// TODO Auto-generated method stub
+		return players;
+	}
+
+	public void reduceCurses() {
+		if(buyableCurseCards <= 0)
+			return;
+		buyableCurseCards--;
+		if(buyableCurseCards == 0)
+			this.emptiedCardStacks++;
+	}
 }

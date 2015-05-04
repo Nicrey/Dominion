@@ -3,6 +3,8 @@ package com.mygdx.Dominion.model;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.mygdx.Dominion.Controller.EffectParser;
+
 public class Player {
 
 	private String name;
@@ -103,6 +105,12 @@ public class Player {
 		shuffleDeck();
 	}
 	
+
+	public void putDeckInGraveyard() {
+		graveyard.addAll(deck);
+		deck.clear();
+	}
+	
 	public void shuffleDeck()
 	{
 		Collections.shuffle(deck);
@@ -192,6 +200,62 @@ public class Player {
 		}
 		return ret;
 	}
+
+
+	public boolean hasDefenseCard() {
+		for(Card c : hand)
+		{
+			if(EffectParser.isDefenseCard(c.getEffect()))
+				return true;
+		}
+		return false;
+	}
+
+
+	public void addCurse() {
+		this.graveyard.add(new Card(GameUtils.CARD_CURSE));
+	}
+
+
+	public Card lookAtNextCard() {
+		if(deck.size() > 0 )
+			return deck.get(0);
+		
+		if(graveyard.size() > 0)
+		{
+			deck.addAll(graveyard);
+			graveyard.clear();
+			shuffleDeck();
+			return lookAtNextCard();
+		}
+		return null;
+		
+	}
+
+
+	public void discardTopDeckCard() {
+		if(deck.size() > 0 )
+		{
+			graveyard.add(deck.remove(0));
+			return;
+		}
+		
+		if(graveyard.size() > 0)
+		{
+			deck.addAll(graveyard);
+			graveyard.clear();
+			shuffleDeck();
+			discardTopDeckCard();
+		}
+		
+	}
+
+
+	public int getCompleteDeckSize() {
+		return deck.size() + graveyard.size() + hand.size();
+	}
+
+
 
 
 

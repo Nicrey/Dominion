@@ -64,7 +64,6 @@ public class DominionController {
 		game.putPlayedInCardsInGraveyard(currentPlayer);
 		getTurnPlayer().discardCards();
 		getTurnPlayer().drawCards(5);
-		//TODO: Win
 		if(currentPlayer == game.getPlayerCount()-1)
 			currentPlayer = 0;
 		else
@@ -136,10 +135,16 @@ public class DominionController {
 			return;
 		}
 		
+		if(game.getRemainingCards(c) <= 0)
+			return;
+		
 		getTurnPlayer().addCardToGraveyard(new Card(c));
 		game.buyCard(c);
 		getTurnPlayer().reduceBuys();
 		getTurnPlayer().reduceGold(c.getCost());
+		
+		if(game.isProvincesEmpty() || game.getEmptiedCardStacks() >= 3)
+			System.out.println("ENDE!");
 	}
 
 	
@@ -191,6 +196,39 @@ public class DominionController {
 			updateState();
 
 		
+	}
+
+
+	public ArrayList<Player> getDefenselessPlayers() {
+		ArrayList<Player> attackedPlayers = new ArrayList<Player>();
+		for(Player p : game.getPlayers())
+		{
+			if(!p.hasDefenseCard() && p != getTurnPlayer())
+				attackedPlayers.add(p);
+		}
+		return attackedPlayers;
+	}
+
+
+	public void addCurseToPlayer(Player p) {
+		if(game.getRemainingCards(GameUtils.CARD_CURSE) <= 0)
+			return;
+		p.addCurse();
+		game.reduceCurses();
+	}
+
+
+	public void drawForOtherPlayers(int amount) {
+		for(Player p : game.getPlayers())
+		{
+			if(p != getTurnPlayer())
+				p.drawCards(amount);
+		}
+	}
+
+
+	public DominionUI getView() {
+		return view;
 	}
 
 

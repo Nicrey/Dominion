@@ -59,7 +59,11 @@ public class IntegerCardList {
 	public int size() {
 		return cardList.size();
 	}
-
+	
+	public int getRemainingCards(Card c)
+	{
+		return integerList.get(cardList.indexOf(c));
+	}
 
 	
 }

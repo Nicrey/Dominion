@@ -38,30 +38,30 @@ import com.mygdx.Dominion.model.IntegerCardList;
 
 
 public class DominionUI extends ApplicationAdapter {
-	SpriteBatch batch;
-	ShapeRenderer test;
-	Texture img;
-	OrthographicCamera camera;
-	Stage stage; 
-	Skin skin;
-	Label playerLabel;
-	Label actionLabel;
-	Label buyLabel;
-	Label goldLabel;
+	private SpriteBatch batch;
+	private ShapeRenderer test;
 	
-	TextButton endTurnBtn;
-	TextButton treasureBtn;
-	TextButton testbut;
+	private OrthographicCamera camera;
+	private Stage stage; 
+	private Skin skin;
+	private Label playerLabel;
+	private Label actionLabel;
+	private Label buyLabel;
+	private Label goldLabel;
 	
-	Table buyArea;	
+	private TextButton endTurnBtn;
+	private TextButton treasureBtn;
+	private Image showCard;
 	
-	ArrayList<Polygon> handCards;
-	FloatingCard activeCard;
+	private Table buyArea;	
+	
+	private ArrayList<Polygon> handCards;
+	private FloatingCard activeCard;
 	
 	public float stepAction    = 0;
 	public float stepTreasure  = 0;
 	
-	DominionController game;
+	private DominionController game;
 	
 	@Override
 	public void create () {
@@ -102,7 +102,7 @@ public class DominionUI extends ApplicationAdapter {
 		batch.begin();
 		drawCardsOnBoard();
 		drawCardsInHand();
-		drawActiveCard();
+		//drawActiveCard();
 		//batch.draw(img, 0, 0);
 
 		
@@ -125,7 +125,9 @@ public class DominionUI extends ApplicationAdapter {
 		test.rect(boardRect.x, boardRect.y, boardRect.width, boardRect.height);
 		test.rect(buyRect.x, buyRect.y, buyRect.width, buyRect.height);
 		test.end();
-		//Checking left mouseclick for dragging cards around TODO: LEFT MOUSECLICK FOR BUYING STUFF
+		//Checking left mouseclick for dragging cards around
+		checkHandMouseOver();		
+	
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
 			if(activeCard!=null){
 				dragActiveCardAround();
@@ -146,7 +148,35 @@ public class DominionUI extends ApplicationAdapter {
 		
 		stage.act();
 		stage.draw();
+		batch.begin();
+		drawActiveCard();
+		batch.end();
 	}
+
+
+
+	private void checkHandMouseOver() {
+		Polygon pol = null;
+		ArrayList<Card> hand = getActualHand();
+		if(activeCard!=null)
+			return;
+		//starting at handCards.size() to get the uppermost card => most right card in hand
+		for(int i=handCards.size()-1; i>=0; i--){
+			pol= handCards.get(i);
+			Rectangle rect = pol.getBoundingRectangle();
+			//check for cards in hand that are gonna be scaled / heigt- because of y axis being upside down in mouse inputs
+			if(pol.contains(Gdx.input.getX(), UIConfig.height-Gdx.input.getY())){
+				batch.begin();
+				float center = rect.getX()+rect.getWidth()/2;
+				batch.draw(hand.get(i).getTexture(), center-UIConfig.mouseOverCardWidth/2 , 0, UIConfig.mouseOverCardWidth, UIConfig.mouseOverCardHeight);
+				batch.end();
+					
+				break;
+			}
+		}
+	}
+
+
 
 
 
@@ -194,9 +224,9 @@ public class DominionUI extends ApplicationAdapter {
 				countTreasure++;
 		}
 		if(countTreasure > 0)
-			stepTreasure = UIConfig.boardWidth/(countTreasure) ;
+			stepTreasure = (UIConfig.boardWidth-UIConfig.boardCardWidth)/(countTreasure) ;
 		if(board.size()  > countTreasure)
-			stepAction 	 = UIConfig.boardWidth/((board.size()-countTreasure));
+			stepAction 	 = (UIConfig.boardWidth-UIConfig.boardCardWidth)/((board.size()-countTreasure));
 		if(stepTreasure  > UIConfig.defaultstep)
 			stepTreasure = UIConfig.defaultstep;
 		if(stepAction    > UIConfig.defaultstep)
@@ -268,7 +298,7 @@ public class DominionUI extends ApplicationAdapter {
 		ArrayList<Card> hand = getActualHand();
 		//starting at activeCards.size() to get the uppermost card => most right card in hand
 		for(int i=handCards.size()-1; i>=0; i--){
-			pol= new Polygon(handCards.get(i).getTransformedVertices());
+			pol= handCards.get(i);
 			//check for cards in hand that are gonna be dragged / heigt- because of y axis being upside down in mouse inputs
 			if(pol.contains(Gdx.input.getX(), UIConfig.height-Gdx.input.getY())){
 				//Checks if card is playable in momentary gamestate
@@ -290,7 +320,7 @@ public class DominionUI extends ApplicationAdapter {
 	private void drawActiveCard(){
 		if(activeCard!=null){
 			batch.draw(activeCard.getCard().getTexture(),activeCard.getCardRect().getX(), activeCard.getCardRect().getY(),0,
-							0 , UIConfig.cWidth, UIConfig.cHeight, 1, 1, 0 , 0, 0, UIConfig.textureWidth,UIConfig.textureHeight , false, false);
+							0 , activeCard.getCardRect().getWidth(), activeCard.getCardRect().getHeight(), 1, 1, 0 , 0, 0, UIConfig.textureWidth,UIConfig.textureHeight , false, false);
 		}
 	}
 	
@@ -418,17 +448,35 @@ public class DominionUI extends ApplicationAdapter {
 				TextureRegion reg= new TextureRegion(a.getCard(i).getTexture(), 0.0f, 0.0f, 1f,0.5f);
 				Image image = new Image(reg);
 				image.setSize(UIConfig.buyImgSize, UIConfig.buyImgSize);
-				DominionImageButton btn = new DominionImageButton( image2 , image, " "+c.getCost(),skin);
+
+				final Image imagebig = new Image(a.getCard(i).getTexture());
+				imagebig.setSize(UIConfig.cardPreviewWidth, UIConfig.cardPreviewHeight);
+				final Container<Image> dig = new Container<Image>(imagebig);
+				dig.setSize(UIConfig.cardPreviewWidth, UIConfig.cardPreviewHeight);
+				dig.pad(20);
+				dig.setColor(100, 100, 100, 100);
+				
+				dig.setBackground(UIConfig.previewCardBackground.getDrawable());
+				final DominionImageButton btn = new DominionImageButton( image2 , image, " "+c.getCost(),skin);
 				btn.setSize(UIConfig.buyImgSize,UIConfig.buyImgSize);
 				
-				btn.addListener(new ClickListener(){
+				btn.addListener(new InputListener(){				
 					@Override
-					public void clicked(InputEvent event, float x, float y) {
-						System.out.println("Show Card " + c.getName());
-						//showCard(c);
+					public void enter(InputEvent event, float x, float y,
+							int pointer, Actor fromActor) {
+						dig.setPosition(UIConfig.width/2-UIConfig.cardPreviewWidth/2, UIConfig.boardY);
+						stage.addActor(dig);
+						super.enter(event, x, y, pointer, fromActor);
+					}
+
+					@Override
+					public void exit(InputEvent event, float x, float y,
+							int pointer, Actor toActor) {
+						// TODO Auto-generated method stub
+						dig.remove();
+						super.exit(event, x, y, pointer, toActor);
 					}
 				});
-				
 				buyArea.add(btn).width(UIConfig.buyImgSize).height(UIConfig.buyImgSize).colspan(2);
 			}
 			buyArea.row();
@@ -470,14 +518,33 @@ public class DominionUI extends ApplicationAdapter {
 			TextureRegion reg= new TextureRegion(t.getCard(i).getTexture(), 0.0f, 0.0f, 1f,0.5f);
 			Image image = new Image(reg);
 			image.setSize(UIConfig.buyImgSize, UIConfig.buyImgSize);
-			DominionImageButton btn = new DominionImageButton( image2 , image, " "+c.getCost(),skin);
+			
+			final Image imagebig = new Image(t.getCard(i).getTexture());
+			imagebig.setSize(UIConfig.cardPreviewWidth, UIConfig.cardPreviewHeight);
+			final Container<Image> dig = new Container<Image>(imagebig);
+			dig.setSize(UIConfig.cardPreviewWidth, UIConfig.cardPreviewHeight);
+			dig.pad(20);
+			dig.setColor(100, 100, 100, 100);
+			
+			dig.setBackground(UIConfig.previewCardBackground.getDrawable());
+			final DominionImageButton btn = new DominionImageButton( image2 , image, " "+c.getCost(),skin);
 			btn.setSize(UIConfig.buyImgSize,UIConfig.buyImgSize);
 			
-			btn.addListener(new ClickListener(){
+			btn.addListener(new InputListener(){				
 				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					System.out.println("Show Card " + c.getName());
-					//showCard(c);
+				public void enter(InputEvent event, float x, float y,
+						int pointer, Actor fromActor) {
+					dig.setPosition(UIConfig.width/2-UIConfig.cardPreviewWidth/2, UIConfig.boardY);
+					stage.addActor(dig);
+					super.enter(event, x, y, pointer, fromActor);
+				}
+
+				@Override
+				public void exit(InputEvent event, float x, float y,
+						int pointer, Actor toActor) {
+					// TODO Auto-generated method stub
+					dig.remove();
+					super.exit(event, x, y, pointer, toActor);
 				}
 			});
 
@@ -525,15 +592,12 @@ public class DominionUI extends ApplicationAdapter {
 			
 			final Image imagebig = new Image(v.getCard(i).getTexture());
 			imagebig.setSize(UIConfig.cardPreviewWidth, UIConfig.cardPreviewHeight);
-			final Container<Image> dig = new Container<Image>();
+			final Container<Image> dig = new Container<Image>(imagebig);
 			dig.setSize(UIConfig.cardPreviewWidth, UIConfig.cardPreviewHeight);
 			dig.pad(20);
 			dig.setColor(100, 100, 100, 100);
 			
-			dig.setBackground(imagebig.getDrawable());
-			
-			
-			
+			dig.setBackground(UIConfig.previewCardBackground.getDrawable());
 			final DominionImageButton btn = new DominionImageButton( image2 , image, " "+c.getCost(),skin);
 			btn.setSize(UIConfig.buyImgSize,UIConfig.buyImgSize);
 			
@@ -553,11 +617,6 @@ public class DominionUI extends ApplicationAdapter {
 					dig.remove();
 					super.exit(event, x, y, pointer, toActor);
 				}
-
-				
-				
-
-			
 			});
 
 			buyArea.add(btn).width(UIConfig.buyImgSize).height(UIConfig.buyImgSize).colspan(2);
@@ -587,7 +646,16 @@ public class DominionUI extends ApplicationAdapter {
 		buyArea.row();
 	}
 
+	public void showCard(Card c) {
+	   showCard = new Image(c.getTexture());
+	   float boardCenterX = UIConfig.boardX+ UIConfig.boardWidth/2;
+	   showCard.setPosition(boardCenterX-UIConfig.mouseOverCardWidth/2, UIConfig.boardHeight);
+	   stage.addActor(showCard);
+	}
 
+	public void stopShowingCard() {
+		showCard.remove();
+	}
 
 
 }
