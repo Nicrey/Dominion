@@ -254,6 +254,20 @@ public class Player {
 	public int getCompleteDeckSize() {
 		return deck.size() + graveyard.size() + hand.size();
 	}
+	public int getHandSize()
+	{
+		return hand.size();
+	}
+
+
+	public int getDeckSize() {
+		return deck.size();
+	}
+
+
+	public ArrayList<Card> getGraveyard() {
+		return graveyard;
+	}
 
 
 

@@ -1,36 +1,76 @@
 package com.mygdx.Dominion.UI.model;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton.ImageTextButtonStyle;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
+import com.mygdx.Dominion.UI.UIConfig;
 import com.mygdx.Dominion.model.Board;
-import com.mygdx.Dominion.model.GameUtils;
+import com.mygdx.Dominion.model.Card;
 
-public class CustomLabel extends Label {
+public class CustomLabel extends Button {
 
 	private Board game;
-	private int type;
-	private int index;
+	private Card c;
+	private Label text;
+	private Image bg;
 	
-	public CustomLabel(CharSequence text, Skin skin, Board game, int type , int index) {
 
-		super(text, skin);
+	public CustomLabel(CharSequence text, Skin skin, Board game, Card c) {
+		
+		ImageTextButtonStyle style = new ImageTextButtonStyle();
+		this.setStyle(style);
+		this.bg = new Image(UIConfig.roundButton);		
+		this.text = new Label(text, skin);
+		this.text.setColor(Color.BLACK);
+		
+		this.addActor(bg);
+		this.addActor(this.text);
+	
+
 		this.game = game;
-		this.type = type;
-		this.index = index;
-		// TODO Auto-generated constructor stub
+		this.c = c;
 	}
 
 	@Override
 	public void act(float delta) {
+		this.setText("" + game.getRemainingCards(c));
+		
+		if(game.getRemainingCards(c) == 0)
+		{
+			bg.setColor(UIConfig.disabledColor);
+			text.setColor(UIConfig.wrongColor);
+		}
+			
 
-		if(type == GameUtils.CARDTYPE_ACTION)
-			this.setText("" +game.getBuyableActionCards().getRemainingCards(index));
-		if(type == GameUtils.CARDTYPE_TREASURE)
-			this.setText("" +game.getBuyableTreasureCards().getRemainingCards(index));	
-		if(type == GameUtils.CARDTYPE_VICTORY)
-			this.setText("" +game.getBuyableVictoryCards().getRemainingCards(index));
 	}
-	
-	
+
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
+
+		
+		bg.setPosition(this.getX(), this.getY());
+		bg.setSize(UIConfig.coinSize, UIConfig.coinSize);
+		text.setPosition(this.getX(), this.getY() );
+		text.setSize(UIConfig.coinSize, UIConfig.coinSize);
+		text.setAlignment(Align.center);
+		
+		super.draw(batch, parentAlpha);
+		Array<Actor> children = getChildren();
+		for (int i = 0; i < children.size; i++)
+			children.get(i).draw(batch, parentAlpha);
+
+	}
+
+	private void setText(String string) {
+		text.setText(string);
+
+	}
 
 }

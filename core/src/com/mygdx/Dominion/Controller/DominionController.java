@@ -59,24 +59,80 @@ public class DominionController {
 	}
 	
 	
-	public void endTurn()
+	public void endTurn() throws InterruptedException
 	{
-		game.putPlayedInCardsInGraveyard(currentPlayer);
-		getTurnPlayer().discardCards();
-		getTurnPlayer().drawCards(5);
-		if(currentPlayer == game.getPlayerCount()-1)
-			currentPlayer = 0;
-		else
-			currentPlayer++;
+		if(view.isDisabled())
+			return;
+		Thread end = new Thread(new endTurn());
+		end.start();
+	}
+	
+	private class endTurn implements Runnable
+	{
+
+		@Override
+		public void run() {
+			view.disableUI();
+			while(view.isRendering())
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			getTurnPlayer().discardCards();
+
+			while(view.isRendering())
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			game.putPlayedInCardsInGraveyard(currentPlayer);
 		
-		state = ACTIONCARDPHASE;
-		resetPlayerAttributes();
+			
+			while(view.isRendering())
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			getTurnPlayer().drawCards(5);
+			
+			if(currentPlayer == game.getPlayerCount()-1)
+				currentPlayer = 0;
+			else
+				currentPlayer++;
+			
+			view.showNewPlayer();
+			state = ACTIONCARDPHASE;
+
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			while(view.isRendering())
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+		
+			resetPlayerAttributes();
+			view.stopShowingNewPlayer();
+			view.enableUI();
+		}
+		
 	}
 	
 
 	public void endActions() {
-		System.out.println("EndActions");
-		System.out.println(state);
 		if(state == ACTIONCARDPHASE)
 			updateState();
 	}
@@ -91,6 +147,9 @@ public class DominionController {
 	 */
 	public void cardPlayed(Card c)
 	{
+		if(view.isDisabled())
+			return;
+		
 		if(state == ACTIONCARDPHASE && c.getType() != GameUtils.CARDTYPE_ACTION)
 		{
 			return;
@@ -99,7 +158,7 @@ public class DominionController {
 		{
 			return;
 		}
-		if(getTurnPlayer().getActions() <= 0)
+		if(getTurnPlayer().getActions() <= 0 && state == ACTIONCARDPHASE)
 		{
 			return;
 		}
@@ -126,6 +185,8 @@ public class DominionController {
 	 */
 	public void cardBought(Card c)
 	{
+		if(view.isDisabled())
+			return;
 		if(getTurnPlayer().getBuys() <= 0)
 		{
 			return;
@@ -161,6 +222,8 @@ public class DominionController {
 
 
 	public void playTreasures() {
+		if(view.isDisabled())
+			return;
 		ArrayList<Card> treasures;
 		treasures = getTurnPlayer().getTreasureCardsInHand();
 		for(Card c: treasures)
@@ -192,6 +255,8 @@ public class DominionController {
 
 
 	public void update() {
+		if(view.isDisabled())
+			return;
 		if(state == ACTIONCARDPHASE && getTurnPlayer().getActionCardsInHand().size() == 0)
 			updateState();
 
@@ -211,6 +276,9 @@ public class DominionController {
 
 
 	public void addCurseToPlayer(Player p) {
+		if(view.isDisabled())
+			return;
+		
 		if(game.getRemainingCards(GameUtils.CARD_CURSE) <= 0)
 			return;
 		p.addCurse();
@@ -219,6 +287,8 @@ public class DominionController {
 
 
 	public void drawForOtherPlayers(int amount) {
+		if(view.isDisabled())
+			return;
 		for(Player p : game.getPlayers())
 		{
 			if(p != getTurnPlayer())
@@ -229,6 +299,20 @@ public class DominionController {
 
 	public DominionUI getView() {
 		return view;
+	}
+
+
+	public boolean isBuyable(Card c) {
+		if(c.getCost() <= getTurnPlayer().getGold() && getTurnPlayer().getBuys() > 0)
+			return true;
+		return false;
+	}
+
+
+	public boolean isTurnOver() {
+		if(state == TREASURECARDPHASE && getTurnPlayer().getBuys() == 0 )
+			return true;
+		return false;
 	}
 
 

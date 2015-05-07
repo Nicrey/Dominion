@@ -17,7 +17,7 @@ public class Options {
 	
 	private Options()
 	{
-		this.playerCount = 2;
+		this.playerCount = 4;
 	}
 	
 	public int getPlayerCount()

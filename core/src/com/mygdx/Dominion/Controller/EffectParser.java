@@ -25,7 +25,7 @@ public class EffectParser {
 		
 	}
 	
-	private String formatString(String s)
+	private static String formatString(String s)
 	{
 		return s.toLowerCase();
 	}
@@ -79,29 +79,8 @@ public class EffectParser {
 		
 		if(parts[0].equals("adv"))
 		{
-			int count = 0;
-			int deckcount = 0;
-			while(count < 2 && deckcount < game.getTurnPlayer().getCompleteDeckSize())
-			{
-				if(game.getTurnPlayer().lookAtNextCard() == null)
-					break;
-				
-				game.getView().showCard(game.getTurnPlayer().lookAtNextCard());
-				try {
-					this.wait(100);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				game.getView().stopShowingCard();
-				if(game.getTurnPlayer().lookAtNextCard().getType() == GameUtils.CARDTYPE_TREASURE)
-				{
-					count++;
-					game.getTurnPlayer().drawCard();
-				}else
-					game.getTurnPlayer().discardTopDeckCard();
-				deckcount++;
-			}
+			Thread effect = new Thread(new adventurerEffect());
+			effect.start();
 			
 		}
 		
@@ -118,14 +97,63 @@ public class EffectParser {
 	}
 
 	private static boolean isAttackCard(String s) {
-		if(s.contains("atk"))
+		if(formatString(s).contains("atk"))
 			return true;
 		return false;
 	}
 
 	public static boolean isDefenseCard(String s) {
-		if(s.contains("def"))
+		if(formatString(s).contains("def"))
 			return true;
 		return false;
+	}
+	
+	private class adventurerEffect implements Runnable
+	{
+
+		@Override
+		public void run() {
+			int count = 0;
+			int deckcount = 0;
+			game.getView().disableUI();
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			int possibleDraws = game.getTurnPlayer().getCompleteDeckSize()-game.getTurnPlayer().getHandSize()+game.getTurnPlayer().getDeckSize();
+			while(count < 2 && deckcount < possibleDraws)
+			{
+				
+				if(game.getTurnPlayer().lookAtNextCard() == null)
+					break;
+				
+				game.getView().showCardForAdventurer(game.getTurnPlayer().lookAtNextCard());
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				game.getView().stopShowingCard();
+				if(game.getTurnPlayer().lookAtNextCard().getType() == GameUtils.CARDTYPE_TREASURE)
+				{
+					count++;
+					game.getTurnPlayer().drawCard();
+				}else
+					game.getTurnPlayer().discardTopDeckCard();
+				deckcount++;
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+			game.getView().enableUI();
+		}
+		
 	}
 }

@@ -60,6 +60,11 @@ public class Card {
 	public void setEffect(String effect) {
 		this.effect = effect;
 	}
+
+	public int compareTo(Card i2) {
+		// TODO Auto-generated method stub
+		return this.cost < i2.getCost() ? -1 : 1;
+	}
 	
 	
 	

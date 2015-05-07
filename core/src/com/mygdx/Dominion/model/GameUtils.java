@@ -31,7 +31,7 @@ public class GameUtils {
 	public static final String NAME_MARKET = "Markt";
 	public static final String NAME_WITCH = "Hexe";
 	public static final String NAME_FESTIVAL = "Jahrmark";
-	public static final String NAME_LABRATORY = "Laboratorium";
+	public static final String NAME_LABORATORY = "Laboratorium";
 	public static final String NAME_MINE = "Mine";
 	public static final String NAME_LIBRARY = "Bibliothek";
 	public static final String NAME_COUNCILROOM = "Ratsversammlung";
@@ -101,7 +101,7 @@ public class GameUtils {
 	public static final String EFFECT_MARKET = "A,+1|D,+1|B,+1|G,+1";
 	public static final String EFFECT_WITCH = "D,+2|C,+1,ATK";
 	public static final String EFFECT_FESTIVAL = "A,+2|G,+2|B,+1";
-	public static final String EFFECT_LABRATORY = "A,+1|D,+2";
+	public static final String EFFECT_LABORATORY = "A,+1|D,+2";
 	public static final String EFFECT_MINE = "MIN";
 	public static final String EFFECT_LIBRARY = "LIB";
 	public static final String EFFECT_COUNCILROOM = "D,+4|B,+1|DOP,+1";
@@ -122,13 +122,13 @@ public class GameUtils {
 	public static final String EFFECT_CHANCELLOR = "G,+2|CAN";
 	public static final String EFFECT_VILLAGE = "A,+2|D,+1"; //+2 Actions +1 Draw
 	//2 cost default set
-	public static final String EFFECT_MOAT = "A,+2|DEF";
+	public static final String EFFECT_MOAT = "D,+2|DEF";
 	public static final String EFFECT_CHAPEL = "THR,+4";
 	public static final String EFFECT_CELLAR = "A,+1|CEL";
 	//Treasure Cards
 	public static final String EFFECT_COPPER = "G,+1";
-	public static final String EFFECT_SILVER = "G,+1";
-	public static final String EFFECT_GOLD = "G,+1";
+	public static final String EFFECT_SILVER = "G,+2";
+	public static final String EFFECT_GOLD = "G,+3";
 	
 	//Victory Cards
 	public static final String EFFECT_ESTATE = "V,+1";
@@ -141,7 +141,7 @@ public class GameUtils {
 	//Action Cards
 	public static final Texture TEXTURE_VILLAGE = new Texture("dominion_textures/texture_village.jpg");
 	public static final Texture TEXTURE_MARKET  = new Texture("dominion_textures/texture_market.jpg");
-	public static final Texture TEXTURE_LABRATORY = new Texture("dominion_textures/texture_labratory.jpg");
+	public static final Texture TEXTURE_LABORATORY = new Texture("dominion_textures/texture_laboratory.jpg");
 	public static final Texture TEXTURE_WITCH = new Texture("dominion_textures/texture_witch.jpg");
 	public static final Texture TEXTURE_FESTIVAL = new Texture("dominion_textures/texture_festival.jpg");
 	public static final Texture TEXTURE_WOODCUTTER = new Texture("dominion_textures/texture_woodcutter.jpg");
@@ -160,14 +160,14 @@ public class GameUtils {
 	public static final Texture TEXTURE_DUCHY = new Texture("dominion_textures/texture_duchy.jpg");
 	public static final Texture TEXTURE_PROVINCE = new Texture("dominion_textures/texture_province.jpg");
 	
-	public static final Texture TEXTURE_CURSE = new Texture("dominion_textures/texture_curse");
+	public static final Texture TEXTURE_CURSE = new Texture("dominion_textures/texture_curse.jpg");
 	//--------------------------------------------------------------------------------------------------------------//
 	//Cost of Cards-------------------------------------------------------------------------------------------------//
 	
 	//Action Cards
 	public static final int COST_VILLAGE = 3;
 	public static final int COST_MARKET  = 5;
-	public static final int COST_LABRATORY = 5;
+	public static final int COST_LABORATORY = 5;
 	public static final int COST_WITCH = 5;
 	public static final int COST_FESTIVAL = 5;
 	public static final int COST_WOODCUTTER = 3;
@@ -191,7 +191,7 @@ public class GameUtils {
 	//Action Cards
 	public static final Card CARD_VILLAGE = new Card(NAME_VILLAGE, TEXTURE_VILLAGE, COST_VILLAGE, CARDTYPE_ACTION, EFFECT_VILLAGE);
 	public static final Card CARD_MARKET = new Card(NAME_MARKET, TEXTURE_MARKET, COST_MARKET,CARDTYPE_ACTION, EFFECT_MARKET);
-	public static final Card CARD_LABRATORY = new Card(NAME_LABRATORY, TEXTURE_LABRATORY , COST_LABRATORY, CARDTYPE_ACTION,EFFECT_LABRATORY);
+	public static final Card CARD_LABRATORY = new Card(NAME_LABORATORY, TEXTURE_LABORATORY , COST_LABORATORY, CARDTYPE_ACTION,EFFECT_LABORATORY);
 	public static final Card CARD_WITCH = new Card(NAME_WITCH,TEXTURE_WITCH, COST_WITCH, CARDTYPE_ACTION, EFFECT_WITCH);
 	public static final Card CARD_FESTIVAL = new Card(NAME_FESTIVAL, TEXTURE_FESTIVAL, COST_FESTIVAL, CARDTYPE_ACTION, EFFECT_FESTIVAL);
 	public static final Card CARD_WOODCUTTER = new Card(NAME_WOODCUTTER, TEXTURE_WOODCUTTER, COST_WOODCUTTER, CARDTYPE_ACTION, EFFECT_WOODCUTTER);
@@ -210,7 +210,7 @@ public class GameUtils {
 	public static final Card CARD_DUCHY = new Card(NAME_DUCHY, TEXTURE_DUCHY, COST_DUCHY, CARDTYPE_VICTORY, EFFECT_DUCHY);
 	public static final Card CARD_PROVINCE = new Card(NAME_PROVINCE, TEXTURE_PROVINCE, COST_PROVINCE, CARDTYPE_VICTORY, EFFECT_PROVINCE);
 	
-	public static final Card CARD_CURSE = new Card(NAME_CURSE, TEXTURE_CURSE, COST_CURSE, CARDTYPE_VICTORY, EFFECT_CURSE);
+	public static final Card CARD_CURSE = new Card(NAME_CURSE, TEXTURE_CURSE, COST_CURSE, CARDTYPE_CURSE, EFFECT_CURSE);
 	
 	
 	public static Collection<? extends Card> getCardSet(String string) {

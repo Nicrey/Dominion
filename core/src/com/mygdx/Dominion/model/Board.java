@@ -16,7 +16,7 @@ public class Board {
 
 
 	private ArrayList<Card> completeCardSet;
-	private int numberOfBuyableActionCards = 1;
+	private int numberOfBuyableActionCards = 10;
 	
 	public Board()
 	{
@@ -75,7 +75,7 @@ public class Board {
 		
 		for(Card c: completeCardSet)
 		{
-			if(c.getType() == GameUtils.CARDTYPE_VICTORY || c.getType() == GameUtils.CARDTYPE_CURSE)
+			if(c.getType() == GameUtils.CARDTYPE_VICTORY )
 			{
 				buyableVictoryCards.addCard(c);
 			}
@@ -91,28 +91,15 @@ public class Board {
 		
 		buyableCurseCards = 30;
 		
-		
-		System.out.println(randCards.size());
-		
 		for(int i = 0; i < numberOfBuyableActionCards; i++)
 		{
 			int random = (int) (Math.random() * randCards.size());
 			buyableActionCards.addCard(randCards.remove(random));
 		}
 		
-		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
-		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
-		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
-		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
-		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
-		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
-		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
-		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
-		buyableActionCards.addCard(GameUtils.CARD_VILLAGE);
-		buyableTreasureCards.addCard(GameUtils.CARD_COPPER);
-		buyableTreasureCards.addCard(GameUtils.CARD_COPPER);
-		buyableVictoryCards.addCard(GameUtils.CARD_ESTATE);
-		buyableVictoryCards.addCard(GameUtils.CARD_ESTATE);
+	
+		
+
 		
 	}
 
@@ -176,6 +163,10 @@ public class Board {
 				empty = true;
 			if(c == GameUtils.CARD_PROVINCE && buyableVictoryCards.getRemainingCards(c) == 0)
 				this.provincesEmpty = true;
+		}
+		if(c.getType() == GameUtils.CARDTYPE_CURSE)
+		{
+			reduceCurses();
 		}
 		if(empty)
 			this.emptiedCardStacks++;

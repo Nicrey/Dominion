@@ -37,6 +37,13 @@ public class IntegerCardList {
 			integerList.add(30);
 		}
 		
+		sort();
+		
+	}
+	
+	private void sort()
+	{
+		cardList.sort((i1,i2) -> i1.compareTo(i2));
 	}
 	
 	public void reduceCard(Card c)
