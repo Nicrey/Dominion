@@ -26,6 +26,17 @@ public class Player {
 		graveyard = new ArrayList<Card>();
 		deck = new ArrayList<Card>();
 	}
+	
+	public Player()
+	{
+		this.name = "No Name";
+		actions = 0;
+		gold = 0;
+		buys = 0;
+		hand = new ArrayList<Card>();
+		graveyard = new ArrayList<Card>();
+		deck = new ArrayList<Card>();
+	}
 
 
 	public String getName() {

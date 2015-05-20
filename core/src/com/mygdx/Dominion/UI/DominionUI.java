@@ -2,9 +2,10 @@ package com.mygdx.Dominion.UI;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -44,7 +45,7 @@ import com.mygdx.Dominion.model.GameUtils;
 import com.mygdx.Dominion.model.IntegerCardList;
 import com.mygdx.Dominion.model.Player;
 
-public class DominionUI extends ApplicationAdapter {
+public class DominionUI extends Game implements Screen{
 	private SpriteBatch batch;
 	private ShapeRenderer shapeRenderer;
 
@@ -79,6 +80,7 @@ public class DominionUI extends ApplicationAdapter {
 
 	@Override
 	public void create() {
+		
 		game = new DominionController(this);
 
 		stage = new Stage();
@@ -931,6 +933,31 @@ public class DominionUI extends ApplicationAdapter {
 		stage.addActor(showCardBackground);
 		stage.addActor(showCard);
 	}
+	
+	public void showBoughtCard(Card c)
+	{
+		showCard = new Image(c.getTexture());
+		showCard.setSize(UIConfig.mouseOverCardWidth,
+				UIConfig.mouseOverCardHeight);
+		float boardCenterX = UIConfig.boardX + UIConfig.boardWidth / 2;
+		showCard.setPosition(boardCenterX - UIConfig.mouseOverCardWidth / 2,
+				UIConfig.boardY);
+		showCardBackground = new TextButton("Karte Gekauft", skin);
+		showCardBackground.getLabel().setAlignment(Align.bottom);
+		showCardBackground.getLabel().setColor(UIConfig.windowColor);
+		showCardBackground.align(Align.bottom);
+		float borderSize = 10;
+				float bigBorder = borderSize + borderSize*3;
+		showCardBackground.setSize(UIConfig.mouseOverCardWidth+ borderSize*2,
+				UIConfig.mouseOverCardHeight + bigBorder);
+		showCardBackground.setPosition(boardCenterX
+				- UIConfig.mouseOverCardWidth / 2 - borderSize , UIConfig.boardY
+				- bigBorder + borderSize);
+		
+		stage.addActor(showCardBackground);
+		stage.addActor(showCard);
+			
+	}
 
 	public void stopShowingCard() {
 		showCard.remove();
@@ -979,6 +1006,24 @@ public class DominionUI extends ApplicationAdapter {
 
 	public boolean isDisabled() {
 		return disableUI;
+	}
+
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+		this.create();
+	}
+
+	@Override
+	public void render(float delta) {
+		// TODO Auto-generated method stub
+		this.render();
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

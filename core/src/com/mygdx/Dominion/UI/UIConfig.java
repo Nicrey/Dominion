@@ -9,6 +9,8 @@ public class UIConfig {
 
 	public static final float width = 1280;
 	public static final float height = 720;
+	public static final float menuWidth = 300;
+	public static final float menuHeight = 300;
 	public static final int length = 600;
 	
 	//Cardtexturesize

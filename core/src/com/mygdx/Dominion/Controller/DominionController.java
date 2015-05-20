@@ -1,5 +1,6 @@
 package com.mygdx.Dominion.Controller;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.mygdx.Dominion.UI.DominionUI;
@@ -8,8 +9,13 @@ import com.mygdx.Dominion.model.Card;
 import com.mygdx.Dominion.model.GameUtils;
 import com.mygdx.Dominion.model.Player;
 
-public class DominionController {
+public class DominionController implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3063402530657842508L;
+	
 	public static final int ACTIONCARDPHASE = 0;
 	public static final int TREASURECARDPHASE = 1;
 	public static final int ENDPHASE = 2;
@@ -199,16 +205,52 @@ public class DominionController {
 		if(game.getRemainingCards(c) <= 0)
 			return;
 		
-		getTurnPlayer().addCardToGraveyard(new Card(c));
-		game.buyCard(c);
 		getTurnPlayer().reduceBuys();
 		getTurnPlayer().reduceGold(c.getCost());
 		
+		Thread showCard = new Thread(new showCardThread(c));
+		showCard.start();
+		
+		
 		if(game.isProvincesEmpty() || game.getEmptiedCardStacks() >= 3)
 			System.out.println("ENDE!");
+		
 	}
 
-	
+	private class showCardThread implements Runnable
+	{
+		Card c;
+		
+		public showCardThread(Card c) {
+			this.c = c;
+		}
+
+		@Override
+		public void run() {
+			view.disableUI();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			view.showBoughtCard(this.c);
+			try {
+				Thread.sleep(1500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			getTurnPlayer().addCardToGraveyard(new Card(c));
+			game.buyCard(c);
+			
+			view.stopShowingCard();
+			view.enableUI();
+			
+		}
+		
+	}
 	
 	public Player getTurnPlayer()
 	{
