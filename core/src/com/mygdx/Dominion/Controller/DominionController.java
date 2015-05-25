@@ -168,9 +168,13 @@ public class DominionController implements Serializable {
 		{
 			return;
 		}
-		parser.resolveEffect(c);
+		
 		getTurnPlayer().playCard(c);
 		game.addCardToBoard(c);
+		
+		parser.setCard(c);
+		Thread resolve = new Thread(parser);
+		resolve.run();
 		
 		if(c.getType() == GameUtils.CARDTYPE_ACTION)
 			getTurnPlayer().reduceActions();
@@ -318,8 +322,6 @@ public class DominionController implements Serializable {
 
 
 	public void addCurseToPlayer(Player p) {
-		if(view.isDisabled())
-			return;
 		
 		if(game.getRemainingCards(GameUtils.CARD_CURSE) <= 0)
 			return;

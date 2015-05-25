@@ -31,7 +31,6 @@ public class HiddenDeckUI extends Button {
 	
 	public HiddenDeckUI(DominionController game,Skin skin , int index)
 	{
-		System.out.println(UIConfig.hiddenDeckStep);
 		this.skin = skin;
 		this.game = game;
 		decksize = new Label("",skin);

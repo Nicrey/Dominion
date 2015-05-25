@@ -223,6 +223,15 @@ public class Player {
 	}
 
 
+	public Card getDefenseCard() {
+		for(Card c : hand)
+		{
+			if(EffectParser.isDefenseCard(c.getEffect()))
+				return c;
+		}
+		return null;
+	}
+	
 	public void addCurse() {
 		this.graveyard.add(new Card(GameUtils.CARD_CURSE));
 	}

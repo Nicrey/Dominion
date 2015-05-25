@@ -19,7 +19,7 @@ public class DominionGame extends Game {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.setScreen(menu);
+		this.setScreen(game);
 		
 		
 	}

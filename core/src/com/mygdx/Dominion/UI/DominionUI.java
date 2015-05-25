@@ -936,15 +936,19 @@ public class DominionUI extends Game implements Screen{
 	
 	public void showBoughtCard(Card c)
 	{
+		showCardWithText(c, "Karte gekauft!" );		
+	}
+	public void showCardWithText(Card c, String text)
+	{
+		float boardCenterX = UIConfig.boardX + UIConfig.boardWidth / 2;
 		showCard = new Image(c.getTexture());
 		showCard.setSize(UIConfig.mouseOverCardWidth,
 				UIConfig.mouseOverCardHeight);
-		float boardCenterX = UIConfig.boardX + UIConfig.boardWidth / 2;
 		showCard.setPosition(boardCenterX - UIConfig.mouseOverCardWidth / 2,
 				UIConfig.boardY);
-		showCardBackground = new TextButton("Karte Gekauft", skin);
+		showCardBackground = new TextButton(text, skin);
 		showCardBackground.getLabel().setAlignment(Align.bottom);
-		showCardBackground.getLabel().setColor(UIConfig.windowColor);
+		showCardBackground.getLabel().setColor(UIConfig.coinColor);
 		showCardBackground.align(Align.bottom);
 		float borderSize = 10;
 				float bigBorder = borderSize + borderSize*3;
@@ -956,7 +960,11 @@ public class DominionUI extends Game implements Screen{
 		
 		stage.addActor(showCardBackground);
 		stage.addActor(showCard);
-			
+	}
+	
+	public void showDefenseOrCurseCard(Card c, Player p)
+	{
+		showCardWithText(c, p.getName());
 	}
 
 	public void stopShowingCard() {
