@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.badlogic.gdx.Game;
 import com.esotericsoftware.kryonet.Server;
+import com.mygdx.Dominion.Network.UI.LobbyScreenClient;
 import com.mygdx.Dominion.Network.UI.LobbyScreenServer;
 import com.mygdx.Dominion.Network.UI.MenuScreen;
 
@@ -39,10 +40,17 @@ public class DominionGame extends Game {
 		}
 		this.setScreen(serverLobby);
 	}
+	
+
+	public void changeToLobby(String name, String ip) {
+		LobbyScreenClient clientLobby = null;
+		clientLobby = new LobbyScreenClient(this, name, ip);
+	}
 
 	public void initializeServerGame(int playercount, Server server) {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

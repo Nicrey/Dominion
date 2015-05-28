@@ -27,19 +27,19 @@ import com.mygdx.Dominion.model.Player;
 
 public class MenuScreen implements Screen {
 
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
-    private Stage stage;
-    private Skin skin;
-    private TextField ip;
-    private TextField name;
-    private TextButton startServer;
-    private TextButton connect;
-    private VerticalGroup vg;
-    private Label status;
-    private ArrayList<TextField> connectedPlayers;
-    private DominionGame game;
-    
+	private OrthographicCamera camera;
+	private SpriteBatch batch;
+	private Stage stage;
+	private Skin skin;
+	private TextField ip;
+	private TextField name;
+	private TextButton startServer;
+	private TextButton connect;
+	private VerticalGroup vg;
+	private Label status;
+	private ArrayList<TextField> connectedPlayers;
+	private DominionGame game;
+
 	public MenuScreen(DominionGame game) throws IOException {
 		
 		this.game = game;
@@ -72,10 +72,9 @@ public class MenuScreen implements Screen {
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if(!serverStarted)
-				{
+
 					game.changeToServerScreen();
-				}
+				
 			}
 			
 		});
@@ -83,52 +82,23 @@ public class MenuScreen implements Screen {
 		connect.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				 Client client = new Client();
-				 	Kryo kryo = client.getKryo();
-				   
-				    client.start();
-				    
-				    try {
-						client.connect(1000, ip.getMessageText(), 54555, 54777);
-					} catch (IOException e) {
-						System.out.println("Exception connect");
-						client.stop();
-						System.exit(0);
-					}
-				   
-				    kryo.register(Player.class);
-				    kryo.register(ArrayList.class);
-				    kryo.register(String.class);
-				    
-				    Player request = new Player(name.getText());
-				    request.addActions(2);
-				    client.sendTCP(request);
-				    
-				    client.addListener(new Listener() {
-				        public void received (Connection connection, Object object) {
-				           if (object instanceof String) {
-				              String response = (String)object;
-				              System.out.println(response);
-				           }
-				        }
-				     });
-				    status.setText("Connected to Server");
+				game.changeToLobby(name.getText(), ip.getText());
 			}
 		});
 	}
-	
+
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void render(float delta) {
-		   Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
-	        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-	        stage.act();
-	        stage.draw();
+		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		stage.act();
+		stage.draw();
 
 	}
 
