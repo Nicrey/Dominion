@@ -1,4 +1,4 @@
-package com.mygdx.Dominion.UI;
+package com.mygdx.Dominion.Network.UI;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
@@ -22,6 +21,8 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.mygdx.Dominion.UI.DominionGame;
+import com.mygdx.Dominion.UI.UIConfig;
 import com.mygdx.Dominion.model.Player;
 
 public class MenuScreen implements Screen {
@@ -37,9 +38,11 @@ public class MenuScreen implements Screen {
     private VerticalGroup vg;
     private Label status;
     private ArrayList<TextField> connectedPlayers;
+    private DominionGame game;
     
-	public MenuScreen() throws IOException {
+	public MenuScreen(DominionGame game) throws IOException {
 		
+		this.game = game;
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		batch = new SpriteBatch();
@@ -49,13 +52,13 @@ public class MenuScreen implements Screen {
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
 		
 		vg = new VerticalGroup();
-		vg.setSize(UIConfig.menuWidth, UIConfig.menuHeight);
+		vg.setSize(UIConfig.width, UIConfig.height);
 		ip = new TextField("IP", skin);
 		name = new TextField("Playername" , skin);
 		status = new Label("Not Connected", skin);
 		startServer = new TextButton("Start Server" , skin);
 		connect = new TextButton("Connect to IP" ,skin);
-		connectedPlayers = new ArrayList<TextField>();
+		
 		vg.addActor(ip);
 		vg.addActor(name);
 		vg.addActor(connect);
@@ -71,14 +74,7 @@ public class MenuScreen implements Screen {
 			public void clicked(InputEvent event, float x, float y) {
 				if(!serverStarted)
 				{
-					try {
-				
-						startServer();
-					} catch (IOException e) {
-						status.setText("Setting up Server Failed");
-					}
-					serverStarted = true;
-					status.setText("Server started");
+					game.changeToServerScreen();
 				}
 			}
 			
@@ -93,7 +89,7 @@ public class MenuScreen implements Screen {
 				    client.start();
 				    
 				    try {
-						client.connect(1000, "192.168.0.17", 54555, 54777);
+						client.connect(1000, ip.getMessageText(), 54555, 54777);
 					} catch (IOException e) {
 						System.out.println("Exception connect");
 						client.stop();
@@ -125,35 +121,6 @@ public class MenuScreen implements Screen {
 	public void show() {
 		// TODO Auto-generated method stub
 		
-	}
-	public void startServer() throws IOException
-	{
-		Server server = new Server();
-	    server.start();
-	    server.bind(54555, 54777);
-	    Kryo kryo = server.getKryo();
-	    
-	    kryo.register(Player.class);
-	    kryo.register(ArrayList.class);
-	    kryo.register(String.class);
-	    
-	    server.addListener(new Listener() {
-	        
-
-			public void received (Connection connection, Object object) {
-	           if (object instanceof Player) {
-	              Player request = (Player)object;
-	              System.out.println(request.getName());
-	              connectedPlayers.add(new TextField(request.getName(), skin));
-	              vg.addActor(connectedPlayers.get(connectedPlayers.size()-1));
-	              String response = new String();
-	              server.sendToAllTCP("New Player joined: " + request.getName());
-	              response = "Danke " + request.getName();
-	              connection.sendTCP(response);
-	           }
-	        }
-	     });
-	    
 	}
 
 	@Override

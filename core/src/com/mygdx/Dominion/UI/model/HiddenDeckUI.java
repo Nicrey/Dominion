@@ -29,7 +29,7 @@ public class HiddenDeckUI extends Button {
 	int index;
 	Player player;
 	
-	public HiddenDeckUI(DominionController game,Skin skin , int index)
+	public HiddenDeckUI(DominionController game,Skin skin , int playerIndex, int index )
 	{
 		this.skin = skin;
 		this.game = game;
@@ -66,7 +66,7 @@ public class HiddenDeckUI extends Button {
 		bg3.setSize(UIConfig.coinSize*1f, UIConfig.coinSize*1f);
 		
 		this.index = index;
-		this.player = game.getGameData().getPlayer(index+1);
+		this.player = game.getGameData().getPlayer(playerIndex+1);
 		playername = new Label(player.getName()+ "",skin);
 		playername.setPosition(UIConfig.hiddenPlayerX,UIConfig.hiddenDeckY + index * UIConfig.hiddenDeckHeight +index *UIConfig.hiddenDeckStep );
 		

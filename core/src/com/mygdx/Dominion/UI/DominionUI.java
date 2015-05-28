@@ -78,11 +78,17 @@ public class DominionUI extends Game implements Screen{
 
 	private DominionController game;
 
+	private final int viewIndex;
+	
+	
+	public DominionUI(int index){
+		this.viewIndex = index;
+	}
+	
 	@Override
 	public void create() {
 		
-		game = new DominionController(this);
-
+		game = new DominionController(this,viewIndex);
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		batch = new SpriteBatch();
@@ -160,7 +166,8 @@ public class DominionUI extends Game implements Screen{
 			// Rightclick to instantly put cards on the field
 			if (Gdx.input.justTouched()) {
 				if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)
-						&& !Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+						&& !Gdx.input.isButtonPressed(Input.Buttons.LEFT)
+						&& game.getTurnPlayerIndex() == viewIndex) {
 					if (activeCard == null) {
 						createNewActiveCard();
 						if (activeCard != null)
@@ -194,6 +201,8 @@ public class DominionUI extends Game implements Screen{
 		}
 
 		batch.begin();
+		if(viewIndex != game.getTurnPlayerIndex())
+			putActiveCardBackInHand();
 		drawActiveCard();
 		batch.end();
 		rendering = false;
@@ -209,6 +218,7 @@ public class DominionUI extends Game implements Screen{
 
 		endTurnBtn.setVisible(true);
 		treasureBtn.setVisible(true);
+		
 
 		if (game.getState() == DominionController.ACTIONCARDPHASE)
 			endTurnBtn.setText("Aktionen beenden");
@@ -233,6 +243,11 @@ public class DominionUI extends Game implements Screen{
 			endTurnBtn.setVisible(endTurnBtn.isVisible() ? true : false);
 			treasureBtn.setVisible(treasureBtn.isVisible() ? true : false);
 		}
+		
+		if(game.getTurnPlayerIndex() != viewIndex)
+		{
+			disableAllButtons();
+		}
 
 		if (game.isTurnOver())
 			endTurnBtn.setColor(UIConfig.turnOverColor);
@@ -241,10 +256,17 @@ public class DominionUI extends Game implements Screen{
 		updateHandPolygons();
 
 	}
+	
+
+	private void disableAllButtons() {
+		endTurnBtn.setVisible(false);
+		treasureBtn.setVisible(false);
+	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Drawing Methods for Boards and Hand
 	// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 	// draws the board with treasure cards on the bottom, all other cards above
 	// them
@@ -487,7 +509,7 @@ public class DominionUI extends Game implements Screen{
 	}
 
 	private ArrayList<Card> getActualHand() {
-		ArrayList<Card> ret = (ArrayList<Card>) game.getTurnPlayer().getHand()
+		ArrayList<Card> ret = (ArrayList<Card>) game.getGameData().getPlayer(viewIndex).getHand()
 				.clone();
 		if (activeCard != null)
 			ret.remove(activeCard.getCard());
@@ -531,12 +553,7 @@ public class DominionUI extends Game implements Screen{
 					return;
 				}
 				if (game.getState() == DominionController.TREASURECARDPHASE) {
-					try {
-						game.endTurn();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					game.endTurn();
 					return;
 				}
 			}
@@ -899,9 +916,11 @@ public class DominionUI extends Game implements Screen{
 	private void createHiddenDeckArea(){
 		opponentsDecks = new HiddenDeckUI[game.getGameData().getPlayerCount()-1];
 		
+		int index = 0;
 		for(int i = 0; i < opponentsDecks.length;i++)
 		{
-			opponentsDecks[i] = new HiddenDeckUI(game, skin, i);
+			index = (viewIndex + i + 1) % game.getGameData().getPlayerCount()-1;
+			opponentsDecks[i] = new HiddenDeckUI(game, skin, index,i);
 			stage.addActor(opponentsDecks[i]);
 		}
 		

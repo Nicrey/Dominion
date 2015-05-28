@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.Dominion.UI.UIConfig;
 
 public class GameUtils {
 	
@@ -211,6 +212,9 @@ public class GameUtils {
 	public static final Card CARD_PROVINCE = new Card(NAME_PROVINCE, TEXTURE_PROVINCE, COST_PROVINCE, CARDTYPE_VICTORY, EFFECT_PROVINCE);
 	
 	public static final Card CARD_CURSE = new Card(NAME_CURSE, TEXTURE_CURSE, COST_CURSE, CARDTYPE_CURSE, EFFECT_CURSE);
+	
+	//Other
+	public static final Card CARD_BACK = new Card("Unknown", UIConfig.cardBack, 0 , -1, "");
 	
 	
 	public static Collection<? extends Card> getCardSet(String string) {

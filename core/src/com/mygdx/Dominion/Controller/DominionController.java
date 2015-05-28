@@ -3,9 +3,11 @@ package com.mygdx.Dominion.Controller;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.mygdx.Dominion.Network.ServerAdapter;
 import com.mygdx.Dominion.UI.DominionUI;
 import com.mygdx.Dominion.model.Board;
 import com.mygdx.Dominion.model.Card;
+import com.mygdx.Dominion.model.GameData;
 import com.mygdx.Dominion.model.GameUtils;
 import com.mygdx.Dominion.model.Player;
 
@@ -19,24 +21,33 @@ public class DominionController implements Serializable {
 	public static final int ACTIONCARDPHASE = 0;
 	public static final int TREASURECARDPHASE = 1;
 	public static final int ENDPHASE = 2;
+	private final int controllerIndex;
 	
+	private ServerAdapter server;
 	private DominionUI view; 
 	private int currentPlayer;
 	private Board game;
 	private int state;
 	private EffectParser parser;
+	private GameData updatedGameData;
 	
 	
-	public DominionController(DominionUI view )
+	public DominionController(DominionUI view, int controllerIndex )
 	{
+		this.controllerIndex = controllerIndex;
 		state = 0;
 		this.view = view;
 		game = new Board();
 		currentPlayer = 0;
 		resetPlayerAttributes();
-		parser = new EffectParser(this);
 	}
 	
+	public void setServer(ServerAdapter server)
+	{
+		this.server = server;
+	}
+	
+
 	
 	private void resetPlayerAttributes()
 	{
@@ -64,8 +75,13 @@ public class DominionController implements Serializable {
 		
 	}
 	
+	public void endTurn()
+	{
+		if(getTurnPlayerIndex() == controllerIndex)
+			server.endTurnRequest();
+	}
 	
-	public void endTurn() throws InterruptedException
+	public void endTurnEvent() throws InterruptedException
 	{
 		if(view.isDisabled())
 			return;
@@ -144,15 +160,20 @@ public class DominionController implements Serializable {
 	}
 	
 
-	
+	public void cardPlayed(Card c)
+	{
+		if(getTurnPlayerIndex() == controllerIndex)
+			server.cardPlayedRequest(c);
+	}
 	/**
 	 * called whenever a card is played
 	 * Resolves the effects of the card and adds it to the board as a played card
 	 * and removes it from the hand of the player
 	 * @param c the card that was played
 	 */
-	public void cardPlayed(Card c)
+	public void cardPlayedEvent(Card c)
 	{
+		
 		if(view.isDisabled())
 			return;
 		
@@ -172,20 +193,28 @@ public class DominionController implements Serializable {
 		getTurnPlayer().playCard(c);
 		game.addCardToBoard(c);
 		
-		parser.setCard(c);
-		Thread resolve = new Thread(parser);
-		resolve.run();
+		
+		Thread resolve = new Thread( new EffectParser(this,c));
+		resolve.start();
+		
 		
 		if(c.getType() == GameUtils.CARDTYPE_ACTION)
 			getTurnPlayer().reduceActions();
 		
-		if(getTurnPlayer().getActions() == 0 && state == ACTIONCARDPHASE)
+		if(getTurnPlayer().getActions() == 0
+				&& state == ACTIONCARDPHASE
+				&& !EffectParser.givesAdditionalActions(c.getEffect()))
 		{
 			updateState();
 		}
+	
 	}
 	
-	
+	public void cardBought(Card c)
+	{
+		if(getTurnPlayerIndex() == controllerIndex)
+			server.cardBoughtRequest(c);
+	}
 
 	/**
 	 * called whenever a card is bought 
@@ -193,7 +222,7 @@ public class DominionController implements Serializable {
 	 * also reduces gold and buys the player has left
 	 * @param c  the card that is bought
 	 */
-	public void cardBought(Card c)
+	public void cardBoughtEvent(Card c)
 	{
 		if(view.isDisabled())
 			return;
@@ -238,7 +267,7 @@ public class DominionController implements Serializable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			view.showBoughtCard(this.c);
+			view.showBoughtCard(c);
 			try {
 				Thread.sleep(1500);
 			} catch (InterruptedException e) {
@@ -359,6 +388,23 @@ public class DominionController implements Serializable {
 		return false;
 	}
 
+	public void updateGameData()
+	{
+		if(updatedGameData == null)
+			return;
+		game = updatedGameData.getBoard();
+		currentPlayer = updatedGameData.getPlayer();
+	}
+	
+	public int getControllerIndex()
+	{
+		return controllerIndex;
+	}
+
+
+	public int getTurnPlayerIndex() {
+		return currentPlayer;
+	}
 
 	
 }
