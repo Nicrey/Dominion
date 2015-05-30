@@ -30,10 +30,7 @@ public class Board {
 		
 		
 		//Create Players
-		for(int i = 0; i < Options.getInstance().getPlayerCount();i++)
-		{
-			players.add(new Player("Player "+ i));
-		}
+		players = Options.players;
 		assert(Options.getInstance().getPlayerCount() == players.size());
 		
 		//Create Cards

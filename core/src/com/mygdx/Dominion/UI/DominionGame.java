@@ -1,12 +1,21 @@
 package com.mygdx.Dominion.UI;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.Game;
+import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Server;
+import com.mygdx.Dominion.Network.DominionClient;
+import com.mygdx.Dominion.Network.DominionServer;
+import com.mygdx.Dominion.Network.Controller.DominionServerController;
 import com.mygdx.Dominion.Network.UI.LobbyScreenClient;
 import com.mygdx.Dominion.Network.UI.LobbyScreenServer;
 import com.mygdx.Dominion.Network.UI.MenuScreen;
+import com.mygdx.Dominion.Network.UI.ServerGameScreen;
+import com.mygdx.Dominion.model.GameData;
+import com.mygdx.Dominion.model.Options;
+import com.mygdx.Dominion.model.Player;
 
 public class DominionGame extends Game {
 
@@ -45,10 +54,30 @@ public class DominionGame extends Game {
 	public void changeToLobby(String name, String ip) {
 		LobbyScreenClient clientLobby = null;
 		clientLobby = new LobbyScreenClient(this, name, ip);
+		this.setScreen(clientLobby);
 	}
 
-	public void initializeServerGame(int playercount, Server server) {
-		// TODO Auto-generated method stub
+	public void initializeServerGame(ArrayList<Player> conPlayers, Server kryoServer) {
+		DominionServer server = new DominionServer(kryoServer);
+		server.setController(new DominionServerController());
+		
+		ServerGameScreen serverScreen = new ServerGameScreen(this);
+		server.setUI(serverScreen);
+		
+		this.setScreen(serverScreen);
+	}
+
+	public void startGame(ArrayList<Player> players, int index,
+			GameData gameData, Client c) {
+		
+		Options.getInstance().setPlayers(players);
+		DominionUI ui = new DominionUI(index, this);
+		DominionClient client = new DominionClient(c);
+		ui.getController().setServer(client);
+		ui.getController().setNewGameData(gameData);
+		ui.getController().updateGameData();
+		
+		this.setScreen(ui);
 		
 	}
 

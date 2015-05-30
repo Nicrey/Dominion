@@ -30,6 +30,7 @@ public class LobbyScreenServer implements Screen {
 	DominionGame game;
 	Server server;
 	private ArrayList<TextField> connectedPlayers;
+	private ArrayList<Player> conPlayers;
 	private Skin skin;
 	private VerticalGroup vg;
 	private OrthographicCamera camera;
@@ -38,12 +39,13 @@ public class LobbyScreenServer implements Screen {
 
 	public LobbyScreenServer(DominionGame dominionGame) throws IOException {
 		this.game = dominionGame;
+		conPlayers = new ArrayList<Player>();
 
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, UIConfig.width, UIConfig.height);
+		camera.setToOrtho(false, UIConfig.menuWidth, UIConfig.menuHeight);
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
 		
 		initializeUI();
@@ -53,7 +55,7 @@ public class LobbyScreenServer implements Screen {
 
 	private void initializeUI() {
 		vg = new VerticalGroup();
-		vg.setSize(UIConfig.width, UIConfig.height);
+		vg.setSize(UIConfig.menuWidth, UIConfig.menuHeight);
 		vg.align(Align.center);
 		connectedPlayers = new ArrayList<TextField>();
 		stage.addActor(vg);
@@ -72,7 +74,7 @@ public class LobbyScreenServer implements Screen {
 			public void clicked(InputEvent event, float x, float y) {
 				if(connectedPlayers.size() >= 2)
 				{
-					game.initializeServerGame(connectedPlayers.size(),server);
+					game.initializeServerGame(conPlayers,server);
 				}
 				else
 				{
@@ -122,13 +124,11 @@ public class LobbyScreenServer implements Screen {
 			if (object instanceof Player) {
 				Player request = (Player) object;
 				System.out.println(request.getName());
+				conPlayers.add(request);
 				connectedPlayers.add(new TextField(request.getName(), skin));
 				vg.addActorAt(2 + connectedPlayers.size()-1, connectedPlayers.get(connectedPlayers.size() - 1));
-				String response = new String();
-				server.sendToAllTCP("New Player joined: "
-						+ request.getName());
-				response = "Danke " + request.getName();
-				connection.sendTCP(response);
+				ArrayList<Player> response = conPlayers;
+				server.sendToAllTCP(response);
 			}
 		}
 	}

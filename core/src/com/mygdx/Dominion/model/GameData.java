@@ -11,10 +11,12 @@ public class GameData implements Serializable {
 
 	private Board board;
 	private int player;
+	private int state;
 
-	public GameData(Board b, int turnPlayer) {
+	public GameData(Board b, int turnPlayer, int state) {
 		this.board = b;
 		this.player = turnPlayer;
+		this.state = state;
 	}
 
 	public Board getBoard() {
@@ -23,6 +25,10 @@ public class GameData implements Serializable {
 
 	public int getPlayer() {
 		return player;
+	}
+
+	public int getState() {
+		return state;
 	}
 
 }

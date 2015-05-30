@@ -8,8 +8,8 @@ import com.mygdx.Dominion.UI.UIConfig;
 public class DesktopLauncher {
 	public static void main(String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = (int) UIConfig.width;
-		config.height = (int) UIConfig.height;
+		config.width = (int) UIConfig.menuWidth;
+		config.height = (int) UIConfig.menuHeight;
 		new LwjglApplication(new DominionGame(), config);
 		
 		

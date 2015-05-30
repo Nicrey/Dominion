@@ -1,6 +1,5 @@
 package com.mygdx.Dominion.Network.UI;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -8,89 +7,66 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.esotericsoftware.kryo.Kryo;
+import com.badlogic.gdx.utils.Align;
 import com.esotericsoftware.kryonet.Client;
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
-import com.esotericsoftware.kryonet.Server;
+import com.mygdx.Dominion.Network.DominionServer;
 import com.mygdx.Dominion.UI.DominionGame;
 import com.mygdx.Dominion.UI.UIConfig;
-import com.mygdx.Dominion.model.Player;
 
-public class MenuScreen implements Screen {
+public class ServerGameScreen implements Screen{
 
+	private DominionGame game;
+	private Skin skin;
+	private VerticalGroup vg;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Stage stage;
-	private Skin skin;
-	private TextField ip;
-	private TextField name;
-	private TextButton startServer;
-	private TextButton connect;
-	private VerticalGroup vg;
-	private Label status;
-	private ArrayList<TextField> connectedPlayers;
-	private DominionGame game;
+	private ScrollPane logPane;
+	private TextArea log;
+	
+	public ServerGameScreen(DominionGame dominionGame) {
+		this.game = dominionGame;
 
-	public MenuScreen(DominionGame game) throws IOException {
-		
-		this.game = game;
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, UIConfig.menuWidth, UIConfig.menuHeight);
-
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
-		
-		vg = new VerticalGroup();
-		vg.setSize(UIConfig.menuWidth, UIConfig.menuHeight);
-		ip = new TextField("IP", skin);
-		name = new TextField("Playername" , skin);
-		status = new Label("Not Connected", skin);
-		startServer = new TextButton("Start Server" , skin);
-		connect = new TextButton("Connect to IP" ,skin);
-		
-		vg.addActor(ip);
-		vg.addActor(name);
-		vg.addActor(connect);
-		vg.addActor(startServer);
-		vg.addActor(status);
-		
-		stage.addActor(vg);
-		startServer.addListener(new ClickListener(){
 
-			private boolean serverStarted=false;
-
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-
-					game.changeToServerScreen();
-				
-			}
-			
-		});
-		
-		connect.addListener(new ClickListener(){
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				game.changeToLobby(name.getText(), ip.getText());
-			}
-		});
+		initializeUI();
 	}
 
+	private void initializeUI() {
+		vg = new VerticalGroup();
+		vg.setSize(UIConfig.menuWidth, UIConfig.menuHeight);
+		vg.align(Align.center);
+		stage.addActor(vg);
+		
+		Label header = new Label("Server Play Log",skin);
+		log = new TextArea("Game Started",skin);
+		logPane = new ScrollPane(log);
+		
+		vg.addActor(header);
+		vg.addActor(logPane);
+	}
+
+	public void log(String s)
+	{
+		log.appendText(s);
+		log.appendText("\n");
+	}
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -99,37 +75,36 @@ public class MenuScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.act();
 		stage.draw();
-
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		batch.dispose();
+		
 	}
 
 }

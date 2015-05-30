@@ -77,18 +77,23 @@ public class DominionUI extends Game implements Screen{
 	private boolean rendering = false;
 
 	private DominionController game;
+	private DominionGame application;
 
 	private final int viewIndex;
 	
 	
-	public DominionUI(int index){
+	public DominionUI(int index, DominionGame application){
 		this.viewIndex = index;
+		this.application = application;
+		game = new DominionController(this,viewIndex);
 	}
-	
+	public DominionController getController()
+	{
+		return game;
+	}
 	@Override
 	public void create() {
 		
-		game = new DominionController(this,viewIndex);
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		batch = new SpriteBatch();

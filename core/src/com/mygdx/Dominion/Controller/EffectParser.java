@@ -122,7 +122,7 @@ public class EffectParser implements Runnable {
 	 * @param s
 	 * @return
 	 */
-	private static boolean isAttackCard(String s) {
+	public static boolean isAttackCard(String s) {
 		if (formatString(s).contains("atk"))
 			return true;
 		return false;

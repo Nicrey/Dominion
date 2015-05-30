@@ -1,4 +1,4 @@
-package com.mygdx.Dominion.Network;
+package com.mygdx.Dominion.Network.Requests;
 
 public class TurnEndRequest {
 

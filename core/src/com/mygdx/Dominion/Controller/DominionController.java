@@ -3,7 +3,7 @@ package com.mygdx.Dominion.Controller;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import com.mygdx.Dominion.Network.ServerAdapter;
+import com.mygdx.Dominion.Network.DominionClient;
 import com.mygdx.Dominion.UI.DominionUI;
 import com.mygdx.Dominion.model.Board;
 import com.mygdx.Dominion.model.Card;
@@ -23,7 +23,7 @@ public class DominionController implements Serializable {
 	public static final int ENDPHASE = 2;
 	private final int controllerIndex;
 	
-	private ServerAdapter server;
+	private DominionClient server;
 	private DominionUI view; 
 	private int currentPlayer;
 	private Board game;
@@ -42,7 +42,7 @@ public class DominionController implements Serializable {
 		resetPlayerAttributes();
 	}
 	
-	public void setServer(ServerAdapter server)
+	public void setServer(DominionClient server)
 	{
 		this.server = server;
 	}
@@ -56,7 +56,13 @@ public class DominionController implements Serializable {
 		getTurnPlayer().setBuys(1);
 	}
 	
-	private void updateState() {
+	
+	private void updateState()
+	{
+		server.updateStateRequest();
+	}
+	
+	private void updateStateEvent() {
 		if(state == ACTIONCARDPHASE)
 		{
 			state = TREASURECARDPHASE;
@@ -394,6 +400,7 @@ public class DominionController implements Serializable {
 			return;
 		game = updatedGameData.getBoard();
 		currentPlayer = updatedGameData.getPlayer();
+		state = updatedGameData.getState();
 	}
 	
 	public int getControllerIndex()
@@ -404,6 +411,10 @@ public class DominionController implements Serializable {
 
 	public int getTurnPlayerIndex() {
 		return currentPlayer;
+	}
+
+	public void setNewGameData(GameData gameData) {
+		updatedGameData = gameData;
 	}
 
 	
