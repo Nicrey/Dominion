@@ -21,8 +21,18 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.mygdx.Dominion.Network.Util;
+import com.mygdx.Dominion.Network.Requests.CardBoughtRequest;
+import com.mygdx.Dominion.Network.Requests.CardPlayedRequest;
+import com.mygdx.Dominion.Network.Requests.StartGameRequest;
+import com.mygdx.Dominion.Network.Requests.TurnEndRequest;
+import com.mygdx.Dominion.Network.Requests.UpdateStateRequest;
 import com.mygdx.Dominion.UI.DominionGame;
 import com.mygdx.Dominion.UI.UIConfig;
+import com.mygdx.Dominion.model.Board;
+import com.mygdx.Dominion.model.Card;
+import com.mygdx.Dominion.model.GameData;
+import com.mygdx.Dominion.model.IntegerCardList;
 import com.mygdx.Dominion.model.Player;
 
 public class LobbyScreenServer implements Screen {
@@ -97,9 +107,7 @@ public class LobbyScreenServer implements Screen {
 		server.bind(54555, 54777);
 		Kryo kryo = server.getKryo();
 
-		kryo.register(Player.class);
-		kryo.register(ArrayList.class);
-		kryo.register(String.class);
+		Util.register(kryo);
 
 		server.addListener(new LobbyServerListener());
 

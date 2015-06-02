@@ -58,6 +58,7 @@ public class DominionGame extends Game {
 	}
 
 	public void initializeServerGame(ArrayList<Player> conPlayers, Server kryoServer) {
+		Options.setPlayers(conPlayers);
 		DominionServer server = new DominionServer(kryoServer);
 		server.setController(new DominionServerController());
 		
@@ -70,7 +71,7 @@ public class DominionGame extends Game {
 	public void startGame(ArrayList<Player> players, int index,
 			GameData gameData, Client c) {
 		
-		Options.getInstance().setPlayers(players);
+		Options.setPlayers(players);
 		DominionUI ui = new DominionUI(index, this);
 		DominionClient client = new DominionClient(c);
 		ui.getController().setServer(client);

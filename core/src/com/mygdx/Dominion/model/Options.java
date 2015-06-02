@@ -15,12 +15,15 @@ public class Options {
 	private static Options options = new Options();
 	private int playerCount;
 	private String winner = "";
-	public static ArrayList<Player> players;
+	public static ArrayList<Player> players = new ArrayList<Player>();
 	
 	
 	private Options()
 	{
-		this.playerCount = players.size();
+		if(players != null)
+			this.playerCount = players.size();
+		else
+			this.playerCount = 0;
 	}
 	
 	public int getPlayerCount()
@@ -44,8 +47,10 @@ public class Options {
 		return winner;
 	}
 
-	public void setPlayers(ArrayList<Player> players) {
-		Options.players = players;
+	public static void setPlayers(ArrayList<Player> conplayers) {
+		Options.players = new ArrayList<Player>();
+		Options.players.addAll(conplayers);
+		System.out.println(Options.players.size());
 	}
 
 	

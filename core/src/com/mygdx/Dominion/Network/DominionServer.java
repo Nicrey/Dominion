@@ -23,5 +23,6 @@ public class DominionServer {
 	public void setController(DominionServerController con)
 	{
 		controller = con;
+		server.sendToAllTCP(con.getGameData());
 	}
 }
