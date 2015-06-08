@@ -1,7 +1,6 @@
 package com.mygdx.Dominion.Network.UI;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -16,14 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryonet.Client;
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
-import com.esotericsoftware.kryonet.Server;
 import com.mygdx.Dominion.UI.DominionGame;
 import com.mygdx.Dominion.UI.UIConfig;
-import com.mygdx.Dominion.model.Player;
 
 public class MenuScreen implements Screen {
 
@@ -37,7 +30,6 @@ public class MenuScreen implements Screen {
 	private TextButton connect;
 	private VerticalGroup vg;
 	private Label status;
-	private ArrayList<TextField> connectedPlayers;
 	private DominionGame game;
 
 	public MenuScreen(DominionGame game) throws IOException {
@@ -53,7 +45,7 @@ public class MenuScreen implements Screen {
 		
 		vg = new VerticalGroup();
 		vg.setSize(UIConfig.menuWidth, UIConfig.menuHeight);
-		ip = new TextField("127.0.0.1", skin);
+		ip = new TextField("130.83.103.192", skin);
 		name = new TextField("Playername" , skin);
 		status = new Label("Not Connected", skin);
 		startServer = new TextButton("Start Server" , skin);

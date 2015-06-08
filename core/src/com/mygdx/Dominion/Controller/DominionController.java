@@ -28,7 +28,6 @@ public class DominionController implements Serializable {
 	private int currentPlayer;
 	private Board game;
 	private int state;
-	private EffectParser parser;
 	private GameData updatedGameData;
 	
 	
@@ -75,11 +74,7 @@ public class DominionController implements Serializable {
 			state = ENDPHASE;
 			return;
 		}
-		if(state == ENDPHASE)
-		{
-			state = ACTIONCARDPHASE;		
-			return;
-		}
+		
 		
 	}
 	
@@ -472,6 +467,10 @@ public class DominionController implements Serializable {
 
 	public void setNewGameData(GameData gameData) {
 		updatedGameData = gameData;
+	}
+
+	public void syncWithServer() {
+		server.sync();
 	}
 
 	

@@ -121,10 +121,7 @@ public class DominionServerController {
 			state = ENDPHASE;
 			return;
 		}
-		if (state == ENDPHASE) {
-			state = ACTIONCARDPHASE;
-			return;
-		}
+	
 	}
 
 	public GameData getGameData() {

@@ -15,6 +15,7 @@ import com.mygdx.Dominion.Network.Requests.TurnEndResponse;
 import com.mygdx.Dominion.Network.Requests.UpdateStateRequest;
 import com.mygdx.Dominion.Network.Requests.UpdateStateResponse;
 import com.mygdx.Dominion.model.Card;
+import com.mygdx.Dominion.model.GameData;
 
 public class DominionClient {
 
@@ -52,6 +53,10 @@ public class DominionClient {
 	public void playTreasuresRequest() {
 		client.sendTCP(new PlayTreasuresRequest(index));
 	}
+	
+	public void sync(){
+		client.sendTCP("Sync");
+	}
 
 	public void setIndex(int controllerIndex) {
 		index =controllerIndex;
@@ -79,7 +84,7 @@ public class DominionClient {
 			if(object instanceof CardPlayedResponse){
 				CardPlayedResponse response = (CardPlayedResponse) object;
 				controller.setNewGameData(response.getData());
-				controller.cardPlayedEvent(response.getCard());
+				controller.cardPlayedEvent(controller.getTurnPlayer().getHand().get(response.getIndex()));
 			}
 			
 			if(object instanceof CardBoughtResponse){
@@ -98,6 +103,11 @@ public class DominionClient {
 				PlayTreasuresResponse response = (PlayTreasuresResponse) object;
 				controller.setNewGameData(response.getData());
 				controller.playTreasuresEvent();
+			}
+			
+			if(object instanceof GameData){
+				controller.setNewGameData((GameData)object);
+				controller.updateGameData();
 			}
 		}
 	}

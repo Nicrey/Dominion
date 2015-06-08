@@ -19,7 +19,6 @@ public class Board {
 
 	private ArrayList<Card> completeCardSet;
 	private int numberOfBuyableActionCards = 10;
-	private Object getGameEndPoints;
 
 	public Board(){
 		

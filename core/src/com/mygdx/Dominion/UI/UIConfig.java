@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class UIConfig {
 
-	public static final float width = 800;
-	public static final float height = 600;
+	public static final float width = 1280;
+	public static final float height = 720;
 	public static final float menuWidth = 300;
 	public static final float menuHeight = 300;
 	public static final int length = 600;

@@ -30,10 +30,11 @@ public class ServerGameScreen implements Screen{
 	private Stage stage;
 	private ScrollPane logPane;
 	private TextArea log;
+	private String text;
 	
 	public ServerGameScreen(DominionGame dominionGame) {
 		this.game = dominionGame;
-
+		text = "";
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		batch = new SpriteBatch();
@@ -63,7 +64,7 @@ public class ServerGameScreen implements Screen{
 	public void log(String s)
 	{
 		System.out.println(s);
-		log.appendText(s);
+		text = s;
 		
 	}
 	@Override
@@ -76,8 +77,11 @@ public class ServerGameScreen implements Screen{
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		log.appendText(text);
+		text = "";
 		stage.act();
 		stage.draw();
+		
 	}
 
 	@Override

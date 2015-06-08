@@ -8,6 +8,7 @@ public class CardPlayedResponse {
 	
 	private Card c;
 	private GameData data;
+	private int index;
 	
 	public CardPlayedResponse(){
 		c = null;
@@ -25,5 +26,9 @@ public class CardPlayedResponse {
 	
 	public Card getCard(){
 		return c;
+	}
+	
+	public int getIndex(){
+		return index;
 	}
 }

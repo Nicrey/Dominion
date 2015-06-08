@@ -82,7 +82,6 @@ public class DominionUI extends Game implements Screen{
 	private DominionGame application;
 
 	private final int viewIndex;
-	private FitViewport viewport;
 	private Rectangle boardRect;
 	private Rectangle buyRect;
 	private FPSLogger logger;
@@ -197,6 +196,8 @@ public class DominionUI extends Game implements Screen{
 					}
 
 				}
+				if(Gdx.input.isButtonPressed(Input.Buttons.MIDDLE))
+					game.syncWithServer();
 
 			}
 

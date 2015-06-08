@@ -47,6 +47,8 @@ public class DominionServer {
 
 	private class GameListener extends Listener {
 		public void received(Connection connection, Object object) {
+			
+			
 			if(object instanceof TurnEndRequest){
 				TurnEndRequest request = (TurnEndRequest) object;
 				if(request.getIndex() != controller.getCurrentPlayer())
@@ -69,6 +71,7 @@ public class DominionServer {
 				Card actualCard = controller.getTurnPlayer().getHand().get(request.getCardIndex());
 				if(!actualCard.getName().equals( request.getCard().getName())){
 					ui.log("Hand is not the same on Client and Server");
+					
 					return;
 				}
 					
@@ -110,6 +113,12 @@ public class DominionServer {
 				ui.log("Player " + controller.getTurnPlayer().getName()+ " played all treasures");
 				PlayTreasuresResponse response = new PlayTreasuresResponse(controller.getGameData());
 				server.sendToAllUDP(response);
+			}
+			
+			if(object instanceof String){
+				if(object.equals("Sync")){
+					server.sendToAllTCP(controller.getGameData());
+				}
 			}
 		}
 	}

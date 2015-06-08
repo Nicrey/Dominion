@@ -7,7 +7,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -19,17 +18,9 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.Dominion.Network.Util;
-import com.mygdx.Dominion.Network.Requests.CardBoughtRequest;
-import com.mygdx.Dominion.Network.Requests.CardPlayedRequest;
 import com.mygdx.Dominion.Network.Requests.StartGameRequest;
-import com.mygdx.Dominion.Network.Requests.TurnEndRequest;
-import com.mygdx.Dominion.Network.Requests.UpdateStateRequest;
 import com.mygdx.Dominion.UI.DominionGame;
 import com.mygdx.Dominion.UI.UIConfig;
-import com.mygdx.Dominion.model.Board;
-import com.mygdx.Dominion.model.Card;
-import com.mygdx.Dominion.model.GameData;
-import com.mygdx.Dominion.model.IntegerCardList;
 import com.mygdx.Dominion.model.Player;
 
 public class LobbyScreenClient implements Screen {
@@ -42,7 +33,6 @@ public class LobbyScreenClient implements Screen {
 	private Skin skin;
 	private VerticalGroup vg;
 	private OrthographicCamera camera;
-	private SpriteBatch batch;
 	private Stage stage;
 	private Label status;
 	
@@ -53,7 +43,6 @@ public class LobbyScreenClient implements Screen {
 
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
-		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, UIConfig.menuWidth, UIConfig.menuHeight);
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
