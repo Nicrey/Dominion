@@ -15,9 +15,10 @@ public class CardPlayedResponse {
 		data = null;
 	}
 	
-	public CardPlayedResponse(GameData data, Card c){
+	public CardPlayedResponse(GameData data, Card c, int index){
 		this.data = data;
 		this.c = c;
+		this.index = index;
 	}
 	
 	public GameData getData(){

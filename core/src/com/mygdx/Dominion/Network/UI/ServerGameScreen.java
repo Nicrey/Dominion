@@ -60,7 +60,10 @@ public class ServerGameScreen implements Screen{
 	public void log(String s)
 	{
 		System.out.println(s);
-		text = s;
+		if(text.equals(""))
+			text = s;
+		else
+			text = text + "\n" + s;
 		
 	}
 	@Override
@@ -73,7 +76,8 @@ public class ServerGameScreen implements Screen{
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		log.appendText(text + "\n");
+		if(!text.equals(""))
+			log.appendText(text + "\n");
 		text = "";
 		stage.act();
 		stage.draw();

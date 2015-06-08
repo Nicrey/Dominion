@@ -42,7 +42,7 @@ public class DominionServer {
 		GameData data = new GameData(con.getBoard(), 0, 0);
 
 		for (int i = 0; i < server.getConnections().length; i++)
-			server.sendToUDP(i + 1, new StartGameRequest(i, data));
+			server.sendToTCP(i + 1, new StartGameRequest(i, data));
 	}
 
 	private class GameListener extends Listener {
@@ -62,7 +62,7 @@ public class DominionServer {
 				}else{
 					TurnEndResponse response = new TurnEndResponse(controller.getGameData());
 					ui.log("Turn End for Player:" + controller.getBoard().getPlayer(request.getIndex()).getName());
-					server.sendToAllUDP(response);
+					server.sendToAllTCP(response);
 				}
 			}
 			
@@ -71,7 +71,7 @@ public class DominionServer {
 				ui.log("Card Played Request for Player:" + controller.getBoard().getPlayer(request.getIndex()).getName() + " with Card: " + request.getCard().getName());
 				if(request.getIndex() != controller.getCurrentPlayer())
 					return;
-				if(request.getCardIndex() > controller.getTurnPlayer().getHandSize())
+				if(request.getCardIndex() >= controller.getTurnPlayer().getHandSize())
 				{
 					ui.log("Hand is not the same on Client and Server. Hand to large");
 					server.sendToAllTCP(controller.getGameData());
@@ -88,9 +88,9 @@ public class DominionServer {
 					ui.log("Card could not be played by Server");
 					return;
 				}
-				CardPlayedResponse response = new CardPlayedResponse(controller.getGameData(), request.getCard());
+				CardPlayedResponse response = new CardPlayedResponse(controller.getGameData(), request.getCard(), request.getCardIndex());
 				ui.log("Card Played by Player: " + controller.getTurnPlayer().getName() + " -> " + request.getCard().getName());
-				server.sendToAllUDP(response);
+				server.sendToAllTCP(response);
 			}
 			
 			if(object instanceof CardBoughtRequest){
@@ -101,7 +101,7 @@ public class DominionServer {
 				controller.cardBoughtEvent(request.getCard());
 				CardBoughtResponse response = new CardBoughtResponse(controller.getGameData(), request.getCard());
 				ui.log("Card Bought by Player: " + controller.getTurnPlayer().getName() + " -> " + request.getCard().getName());
-				server.sendToAllUDP(response);
+				server.sendToAllTCP(response);
 			
 			}
 			
@@ -113,7 +113,7 @@ public class DominionServer {
 				controller.updateStateEvent();
 				ui.log("State updated");
 				UpdateStateResponse response = new UpdateStateResponse(controller.getGameData());
-				server.sendToAllUDP(response);
+				server.sendToAllTCP(response);
 			}
 			
 			if(object instanceof PlayTreasuresRequest){
@@ -124,7 +124,7 @@ public class DominionServer {
 				controller.playTreasuresEvent();
 				ui.log("Player " + controller.getTurnPlayer().getName()+ " played all treasures");
 				PlayTreasuresResponse response = new PlayTreasuresResponse(controller.getGameData());
-				server.sendToAllUDP(response);
+				server.sendToAllTCP(response);
 			}
 			
 			if(object instanceof String){
