@@ -1,7 +1,5 @@
 package com.mygdx.Dominion.Network.UI;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,12 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.utils.Align;
-import com.esotericsoftware.kryonet.Client;
-import com.mygdx.Dominion.Network.DominionServer;
 import com.mygdx.Dominion.UI.DominionGame;
 import com.mygdx.Dominion.UI.UIConfig;
 
@@ -24,7 +19,7 @@ public class ServerGameScreen implements Screen{
 
 	private DominionGame game;
 	private Skin skin;
-	private VerticalGroup vg;
+	private Table table;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Stage stage;
@@ -47,18 +42,18 @@ public class ServerGameScreen implements Screen{
 	}
 
 	private void initializeUI() {
-		vg = new VerticalGroup();
-		vg.setSize(UIConfig.menuWidth, UIConfig.menuHeight);
-		vg.align(Align.center);
-		stage.addActor(vg);
+		table  = new Table();
+		table.setSize(UIConfig.menuWidth, UIConfig.menuHeight);
+		table.align(Align.center);
+		stage.addActor(table);
 		
 		Label header = new Label("Server Play Log",skin);
 		log = new TextArea("Game Started",skin);
 		logPane = new ScrollPane(log);
+		table.add(header);
+		table.add(logPane).width(250f).height(250f);
+		table.row();
 		
-		
-		vg.addActor(header);
-		vg.addActor(logPane);
 	}
 
 	public void log(String s)
