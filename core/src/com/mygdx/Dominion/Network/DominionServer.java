@@ -68,10 +68,16 @@ public class DominionServer {
 				CardPlayedRequest request = (CardPlayedRequest) object;
 				if(request.getIndex() != controller.getCurrentPlayer())
 					return;
+				if(request.getCardIndex() > controller.getTurnPlayer().getHandSize())
+				{
+					ui.log("Hand is not the same on Client and Server");
+					server.sendToAllTCP(controller.getGameData());
+					return;
+				}
 				Card actualCard = controller.getTurnPlayer().getHand().get(request.getCardIndex());
 				if(!actualCard.getName().equals( request.getCard().getName())){
 					ui.log("Hand is not the same on Client and Server");
-					
+					server.sendToAllTCP(controller.getGameData());
 					return;
 				}
 					
