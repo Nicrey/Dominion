@@ -29,6 +29,8 @@ public class DominionController implements Serializable {
 	private Board game;
 	private int state;
 	private GameData updatedGameData;
+
+	private boolean stateUpdate = false;
 	
 	
 	public DominionController(DominionUI view, int controllerIndex )
@@ -39,6 +41,7 @@ public class DominionController implements Serializable {
 		game = new Board("default");
 		currentPlayer = 0;
 		resetPlayerAttributes();
+		
 	}
 	
 	public void setServer(DominionClient server)
@@ -46,6 +49,7 @@ public class DominionController implements Serializable {
 		this.server = server;
 		server.setIndex(controllerIndex);
 		server.setController(this);
+
 	}
 	
 
@@ -60,21 +64,22 @@ public class DominionController implements Serializable {
 	
 	private void updateState()
 	{
-		server.updateStateRequest();
+		
+		if(controllerIndex == currentPlayer && !stateUpdate){
+			server.updateStateRequest();
+			stateUpdate = true;
+		}
+	
 	}
 	
 	public void updateStateEvent() {
+		
 		if(state == ACTIONCARDPHASE)
 		{
 			state = TREASURECARDPHASE;
+			stateUpdate = false;
 			return;
 		}
-		if(state == TREASURECARDPHASE)
-		{
-			state = ENDPHASE;
-			return;
-		}
-		
 		
 	}
 	
@@ -165,7 +170,7 @@ public class DominionController implements Serializable {
 	
 
 	public void endActions() {
-		if(state == ACTIONCARDPHASE)
+		if(state == ACTIONCARDPHASE )
 			updateState();
 	}
 	
@@ -388,7 +393,7 @@ public class DominionController implements Serializable {
 	public void update() {
 		if(view.isDisabled())
 			return;
-		if(state == ACTIONCARDPHASE && getTurnPlayer().getActionCardsInHand().size() == 0)
+		if(state == ACTIONCARDPHASE && getTurnPlayer().getActionCardsInHand().size() == 0 )
 			updateState();
 
 		
@@ -452,6 +457,7 @@ public class DominionController implements Serializable {
 		game = updatedGameData.getBoard();
 		currentPlayer = updatedGameData.getPlayer();
 		state = updatedGameData.getState();
+		stateUpdate = false;
 		
 	}
 	

@@ -49,10 +49,10 @@ public class ServerGameScreen implements Screen{
 		
 		Label header = new Label("Server Play Log",skin);
 		log = new TextArea("Game Started",skin);
-		logPane = new ScrollPane(log);
+		logPane = new ScrollPane(log,skin);
 		table.add(header);
 		table.row();
-		table.add(logPane).width(250f).height(250f);
+		table.add(logPane).width(300).height(250f);
 		table.row();
 		
 	}

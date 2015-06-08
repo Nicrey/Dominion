@@ -14,7 +14,7 @@ public class DominionServerController {
 
 	public static final int ACTIONCARDPHASE = 0;
 	public static final int TREASURECARDPHASE = 1;
-	public static final int ENDPHASE = 2;
+
 	Board game;
 	int currentPlayer;
 	int state;
@@ -117,11 +117,7 @@ public class DominionServerController {
 			state = TREASURECARDPHASE;
 			return;
 		}
-		if (state == TREASURECARDPHASE) {
-			state = ENDPHASE;
-			return;
-		}
-	
+		
 	}
 
 	public GameData getGameData() {

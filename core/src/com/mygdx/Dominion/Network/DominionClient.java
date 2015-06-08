@@ -64,6 +64,7 @@ public class DominionClient {
 
 	public void setController(DominionController dominionController) {
 		controller = dominionController;
+		sync();
 	}
 	
 	private class GameListener extends Listener{
