@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class UIConfig {
 
-	public static final float width = 1280;
-	public static final float height = 720;
+	public static final float width = 800;
+	public static final float height = 600;
 	public static final float menuWidth = 300;
 	public static final float menuHeight = 300;
 	public static final int length = 600;
@@ -93,7 +93,10 @@ public class UIConfig {
 	//PAdding for Button in Buy Window
 	public static final float padding = width/100;
 	public static final Image previewCardBackground = new Image(new Texture("dominion_textures/cointexture.png"));
+	public static final String cardBackStr = "dominion_textures/texture_cardback.jpg";
+	
 	public static final Texture cardBack = new Texture("dominion_textures/texture_cardback.jpg");
+	
 	public static final Texture roundButton = new Texture("dominion_textures/texture_count.png");
 	
 

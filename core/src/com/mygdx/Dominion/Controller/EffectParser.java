@@ -146,6 +146,16 @@ public class EffectParser implements Runnable {
 			return true;
 		return false;
 	}
+	
+	public static boolean parseSingleTreasureCard(String s, Player p){
+		if(s.length() > 4)
+			return false;
+		String[] parts = s.split(",");
+		if (parts[0].equals("g"))
+			p.addGold(Integer.parseInt(parts[1]));
+		return true;
+		
+	}
 
 	public void runDrawEffect(int amount) {
 		game.getView().disableUI();
@@ -268,5 +278,16 @@ public class EffectParser implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public static int parseVictoryCard(Card c) {
+		for (String s : c.getEffect().split("\\|")) {
+			s = formatString(s);
+			if(s.startsWith("v")){
+				String[] parts = s.split(",");
+				return Integer.parseInt(parts[1]);
+			}
+		}
+		return 0;
 	}
 }

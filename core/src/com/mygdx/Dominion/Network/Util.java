@@ -3,13 +3,19 @@ package com.mygdx.Dominion.Network;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import com.esotericsoftware.kryo.Kryo;
 import com.mygdx.Dominion.Network.Requests.CardBoughtRequest;
+import com.mygdx.Dominion.Network.Requests.CardBoughtResponse;
 import com.mygdx.Dominion.Network.Requests.CardPlayedRequest;
+import com.mygdx.Dominion.Network.Requests.CardPlayedResponse;
+import com.mygdx.Dominion.Network.Requests.GameOverResponse;
+import com.mygdx.Dominion.Network.Requests.PlayTreasuresRequest;
+import com.mygdx.Dominion.Network.Requests.PlayTreasuresResponse;
 import com.mygdx.Dominion.Network.Requests.StartGameRequest;
 import com.mygdx.Dominion.Network.Requests.TurnEndRequest;
+import com.mygdx.Dominion.Network.Requests.TurnEndResponse;
 import com.mygdx.Dominion.Network.Requests.UpdateStateRequest;
+import com.mygdx.Dominion.Network.Requests.UpdateStateResponse;
 import com.mygdx.Dominion.model.Board;
 import com.mygdx.Dominion.model.Card;
 import com.mygdx.Dominion.model.GameData;
@@ -33,7 +39,13 @@ public class Util {
 		kryo.register(CardPlayedRequest.class);
 		kryo.register(StartGameRequest.class);
 		kryo.register(TurnEndRequest.class);
+		kryo.register(TurnEndResponse.class);
 		kryo.register(UpdateStateRequest.class);
-		kryo.register(FileTextureData.class);
+		kryo.register(UpdateStateResponse.class);
+		kryo.register(CardPlayedResponse.class);
+		kryo.register(CardBoughtResponse.class);
+		kryo.register(PlayTreasuresRequest.class);
+		kryo.register(PlayTreasuresResponse.class);
+		kryo.register(GameOverResponse.class);
 	}
 }

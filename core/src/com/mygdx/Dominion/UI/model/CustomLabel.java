@@ -5,24 +5,24 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton.ImageTextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton.ImageTextButtonStyle;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.Dominion.Controller.DominionController;
 import com.mygdx.Dominion.UI.UIConfig;
-import com.mygdx.Dominion.model.Board;
 import com.mygdx.Dominion.model.Card;
 
 public class CustomLabel extends Button {
 
-	private Board game;
+	private DominionController game;
 	private Card c;
 	private Label text;
 	private Image bg;
 	
 
-	public CustomLabel(CharSequence text, Skin skin, Board game, Card c) {
+	public CustomLabel(CharSequence text, Skin skin, DominionController game, Card c) {
 		
 		ImageTextButtonStyle style = new ImageTextButtonStyle();
 		this.setStyle(style);
@@ -40,9 +40,9 @@ public class CustomLabel extends Button {
 
 	@Override
 	public void act(float delta) {
-		this.setText("" + game.getRemainingCards(c));
+		this.setText("" + game.getGameData().getRemainingCards(c));
 		
-		if(game.getRemainingCards(c) == 0)
+		if(game.getGameData().getRemainingCards(c) == 0)
 		{
 			bg.setColor(UIConfig.disabledColor);
 			text.setColor(UIConfig.wrongColor);

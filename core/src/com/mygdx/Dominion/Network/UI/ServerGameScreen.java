@@ -40,7 +40,8 @@ public class ServerGameScreen implements Screen{
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, UIConfig.menuWidth, UIConfig.menuHeight);
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
-
+		Gdx.graphics.setDisplayMode((int)UIConfig.menuWidth, (int)UIConfig.menuHeight, false);
+		
 		initializeUI();
 	}
 
@@ -54,14 +55,16 @@ public class ServerGameScreen implements Screen{
 		log = new TextArea("Game Started",skin);
 		logPane = new ScrollPane(log);
 		
+		
 		vg.addActor(header);
 		vg.addActor(logPane);
 	}
 
 	public void log(String s)
 	{
+		System.out.println(s);
 		log.appendText(s);
-		log.appendText("\n");
+		
 	}
 	@Override
 	public void show() {

@@ -5,12 +5,19 @@ import com.badlogic.gdx.graphics.Texture;
 public class Card {
 
 	private String name;
-	private Texture texture;
+	private String texture;
 	private int cost;
 	private int type;
 	private String effect;
 	
-	public Card(String name, Texture cardTexture, int cost, int type, String effect)
+	public Card(){
+		name = "";
+		texture = "";
+		cost = 0;
+		type = -1;
+		effect = "";
+	}
+	public Card(String name, String cardTexture, int cost, int type, String effect)
 	{
 		this.name = name;
 		this.texture = cardTexture;
@@ -37,9 +44,9 @@ public class Card {
 	}
 
 	public Texture getTexture() {
-		return texture;
+		return GameUtils.getTexture(this);
 	}
-	public void setTexture(Texture texture) {
+	public void setTexture(String texture) {
 		this.texture = texture;
 	}
 	public int getCost() {
@@ -62,9 +69,21 @@ public class Card {
 	}
 
 	public int compareTo(Card i2) {
-		// TODO Auto-generated method stub
 		return this.cost < i2.getCost() ? -1 : 1;
 	}
+	public String getTextureString() {
+		return texture;
+	}
+	/*@Override
+	public boolean equals(Object obj) {
+		return equals((Card)obj);
+	}
+	
+	public boolean equals(Card obj) {
+		return obj.name.equals(this.name);
+	}*/
+	
+	
 	
 	
 	

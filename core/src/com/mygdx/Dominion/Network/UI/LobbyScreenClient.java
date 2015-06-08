@@ -82,7 +82,7 @@ public class LobbyScreenClient implements Screen {
 
 
 	public void connectClient() {
-		client = new Client();
+		client = new Client(65536,8192);
 		Kryo kryo = client.getKryo();
 
 		client.start();
@@ -108,9 +108,15 @@ public class LobbyScreenClient implements Screen {
 			
 			if(object instanceof StartGameRequest)
 			{
+				System.out.println("StartGameRequest");
 				StartGameRequest response = (StartGameRequest) object;
-				game.startGame(response.players, response.index, response.gameData, client);
+				Gdx.app.postRunnable(new Runnable() {
+				         public void run() {
+				        		game.startGame(response.gameData.getBoard().getPlayers(), response.index, response.gameData, client);
+				         };
+				});
 			}
+			
 			if (object instanceof String) {
 				String response = (String) object;
 				status.setText(response);

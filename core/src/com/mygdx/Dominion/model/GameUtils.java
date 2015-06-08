@@ -2,6 +2,8 @@ package com.mygdx.Dominion.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.Dominion.UI.UIConfig;
@@ -140,6 +142,29 @@ public class GameUtils {
 	//----------------------------------------------------------------------------------------------------------------//
 	//Textures of Cards-----------------------------------------------------------------------------------------------//
 	//Action Cards
+	public static final String TEXTURESTR_VILLAGE = ("dominion_textures/texture_village.jpg");
+	public static final String TEXTURESTR_MARKET  = ("dominion_textures/texture_market.jpg");
+	public static final String TEXTURESTR_LABORATORY = ("dominion_textures/texture_laboratory.jpg");
+	public static final String TEXTURESTR_WITCH = ("dominion_textures/texture_witch.jpg");
+	public static final String TEXTURESTR_FESTIVAL = ("dominion_textures/texture_festival.jpg");
+	public static final String TEXTURESTR_WOODCUTTER = ("dominion_textures/texture_woodcutter.jpg");
+	public static final String TEXTURESTR_CHANCELLOR = ("dominion_textures/texture_chancellor.jpg");
+	public static final String TEXTURESTR_MOAT = ("dominion_textures/texture_moat.jpg");
+	public static final String TEXTURESTR_SMITHY = ("dominion_textures/texture_smithy.jpg");
+	public static final String TEXTURESTR_ADVENTURER = ("dominion_textures/texture_adventurer.jpg");
+	
+	//Treasure Cards
+	public static final String TEXTURESTR_COPPER = ("dominion_textures/texture_copper.jpg");
+	public static final String TEXTURESTR_SILVER = ("dominion_textures/texture_silver.jpg");
+	public static final String TEXTURESTR_GOLD = ("dominion_textures/texture_gold.jpg");
+	
+	//victory Cards
+	public static final String TEXTURESTR_ESTATE = ("dominion_textures/texture_estate.jpg");
+	public static final String TEXTURESTR_DUCHY = ("dominion_textures/texture_duchy.jpg");
+	public static final String TEXTURESTR_PROVINCE =("dominion_textures/texture_province.jpg");
+	
+	public static final String TEXTURESTR_CURSE = ("dominion_textures/texture_curse.jpg");
+	
 	public static final Texture TEXTURE_VILLAGE = new Texture("dominion_textures/texture_village.jpg");
 	public static final Texture TEXTURE_MARKET  = new Texture("dominion_textures/texture_market.jpg");
 	public static final Texture TEXTURE_LABORATORY = new Texture("dominion_textures/texture_laboratory.jpg");
@@ -162,6 +187,9 @@ public class GameUtils {
 	public static final Texture TEXTURE_PROVINCE = new Texture("dominion_textures/texture_province.jpg");
 	
 	public static final Texture TEXTURE_CURSE = new Texture("dominion_textures/texture_curse.jpg");
+	
+	public static Map<String, Texture> textureMap;
+	
 	//--------------------------------------------------------------------------------------------------------------//
 	//Cost of Cards-------------------------------------------------------------------------------------------------//
 	
@@ -190,35 +218,36 @@ public class GameUtils {
 	//--------------------------------------------------------------------------------------------------------------//
 	//Cards---------------------------------------------------------------------------------------------------------//
 	//Action Cards
-	public static final Card CARD_VILLAGE = new Card(NAME_VILLAGE, TEXTURE_VILLAGE, COST_VILLAGE, CARDTYPE_ACTION, EFFECT_VILLAGE);
-	public static final Card CARD_MARKET = new Card(NAME_MARKET, TEXTURE_MARKET, COST_MARKET,CARDTYPE_ACTION, EFFECT_MARKET);
-	public static final Card CARD_LABRATORY = new Card(NAME_LABORATORY, TEXTURE_LABORATORY , COST_LABORATORY, CARDTYPE_ACTION,EFFECT_LABORATORY);
-	public static final Card CARD_WITCH = new Card(NAME_WITCH,TEXTURE_WITCH, COST_WITCH, CARDTYPE_ACTION, EFFECT_WITCH);
-	public static final Card CARD_FESTIVAL = new Card(NAME_FESTIVAL, TEXTURE_FESTIVAL, COST_FESTIVAL, CARDTYPE_ACTION, EFFECT_FESTIVAL);
-	public static final Card CARD_WOODCUTTER = new Card(NAME_WOODCUTTER, TEXTURE_WOODCUTTER, COST_WOODCUTTER, CARDTYPE_ACTION, EFFECT_WOODCUTTER);
-	public static final Card CARD_CHANCELLOR = new Card(NAME_CHANCELLOR, TEXTURE_CHANCELLOR, COST_CHANCELLOR, CARDTYPE_ACTION, EFFECT_CHANCELLOR);
-	public static final Card CARD_MOAT = new Card(NAME_MOAT, TEXTURE_MOAT,COST_MOAT,CARDTYPE_ACTION, EFFECT_MOAT);
-	public static final Card CARD_SMITHY = new Card(NAME_SMITHY,TEXTURE_SMITHY, COST_SMITHY, CARDTYPE_ACTION, EFFECT_SMITHY);
-	public static final Card CARD_ADVENTURER = new Card(NAME_ADVENTURER, TEXTURE_ADVENTURER, COST_ADVENTURER, CARDTYPE_ACTION, EFFECT_ADVENTURER);
+	public static final Card CARD_VILLAGE = new Card(NAME_VILLAGE, TEXTURESTR_VILLAGE, COST_VILLAGE, CARDTYPE_ACTION, EFFECT_VILLAGE);
+	public static final Card CARD_MARKET = new Card(NAME_MARKET, TEXTURESTR_MARKET, COST_MARKET,CARDTYPE_ACTION, EFFECT_MARKET);
+	public static final Card CARD_LABRATORY = new Card(NAME_LABORATORY, TEXTURESTR_LABORATORY , COST_LABORATORY, CARDTYPE_ACTION,EFFECT_LABORATORY);
+	public static final Card CARD_WITCH = new Card(NAME_WITCH,TEXTURESTR_WITCH, COST_WITCH, CARDTYPE_ACTION, EFFECT_WITCH);
+	public static final Card CARD_FESTIVAL = new Card(NAME_FESTIVAL, TEXTURESTR_FESTIVAL, COST_FESTIVAL, CARDTYPE_ACTION, EFFECT_FESTIVAL);
+	public static final Card CARD_WOODCUTTER = new Card(NAME_WOODCUTTER, TEXTURESTR_WOODCUTTER, COST_WOODCUTTER, CARDTYPE_ACTION, EFFECT_WOODCUTTER);
+	public static final Card CARD_CHANCELLOR = new Card(NAME_CHANCELLOR, TEXTURESTR_CHANCELLOR, COST_CHANCELLOR, CARDTYPE_ACTION, EFFECT_CHANCELLOR);
+	public static final Card CARD_MOAT = new Card(NAME_MOAT, TEXTURESTR_MOAT,COST_MOAT,CARDTYPE_ACTION, EFFECT_MOAT);
+	public static final Card CARD_SMITHY = new Card(NAME_SMITHY,TEXTURESTR_SMITHY, COST_SMITHY, CARDTYPE_ACTION, EFFECT_SMITHY);
+	public static final Card CARD_ADVENTURER = new Card(NAME_ADVENTURER, TEXTURESTR_ADVENTURER, COST_ADVENTURER, CARDTYPE_ACTION, EFFECT_ADVENTURER);
 	
 	//Treasure Cards
-	public static final Card CARD_COPPER = new Card(NAME_COPPER, TEXTURE_COPPER, COST_COPPER, CARDTYPE_TREASURE, EFFECT_COPPER);
-	public static final Card CARD_SILVER = new Card(NAME_SILVER, TEXTURE_SILVER, COST_SILVER, CARDTYPE_TREASURE, EFFECT_SILVER);
-	public static final Card CARD_GOLD = new Card(NAME_GOLD, TEXTURE_GOLD, COST_GOLD, CARDTYPE_TREASURE, EFFECT_GOLD);
+	public static final Card CARD_COPPER = new Card(NAME_COPPER, TEXTURESTR_COPPER, COST_COPPER, CARDTYPE_TREASURE, EFFECT_COPPER);
+	public static final Card CARD_SILVER = new Card(NAME_SILVER, TEXTURESTR_SILVER, COST_SILVER, CARDTYPE_TREASURE, EFFECT_SILVER);
+	public static final Card CARD_GOLD = new Card(NAME_GOLD, TEXTURESTR_GOLD, COST_GOLD, CARDTYPE_TREASURE, EFFECT_GOLD);
 	
 	//Victory Cards
-	public static final Card CARD_ESTATE = new Card(NAME_ESTATE, TEXTURE_ESTATE, COST_ESTATE, CARDTYPE_VICTORY, EFFECT_ESTATE);
-	public static final Card CARD_DUCHY = new Card(NAME_DUCHY, TEXTURE_DUCHY, COST_DUCHY, CARDTYPE_VICTORY, EFFECT_DUCHY);
-	public static final Card CARD_PROVINCE = new Card(NAME_PROVINCE, TEXTURE_PROVINCE, COST_PROVINCE, CARDTYPE_VICTORY, EFFECT_PROVINCE);
+	public static final Card CARD_ESTATE = new Card(NAME_ESTATE, TEXTURESTR_ESTATE, COST_ESTATE, CARDTYPE_VICTORY, EFFECT_ESTATE);
+	public static final Card CARD_DUCHY = new Card(NAME_DUCHY, TEXTURESTR_DUCHY, COST_DUCHY, CARDTYPE_VICTORY, EFFECT_DUCHY);
+	public static final Card CARD_PROVINCE = new Card(NAME_PROVINCE, TEXTURESTR_PROVINCE, COST_PROVINCE, CARDTYPE_VICTORY, EFFECT_PROVINCE);
 	
-	public static final Card CARD_CURSE = new Card(NAME_CURSE, TEXTURE_CURSE, COST_CURSE, CARDTYPE_CURSE, EFFECT_CURSE);
+	public static final Card CARD_CURSE = new Card(NAME_CURSE, TEXTURESTR_CURSE, COST_CURSE, CARDTYPE_CURSE, EFFECT_CURSE);
 	
 	//Other
-	public static final Card CARD_BACK = new Card("Unknown", UIConfig.cardBack, 0 , -1, "");
+	public static final Card CARD_BACK = new Card("Unknown", UIConfig.cardBackStr, 0 , -1, "");
 	
+	public static ArrayList<Card> cardSet = new ArrayList<Card>();
 	
 	public static Collection<? extends Card> getCardSet(String string) {
-		ArrayList<Card> cardSet = new ArrayList<Card>();
+		
 		
 		//Add Gold Cards
 		cardSet.add(CARD_COPPER);
@@ -249,6 +278,42 @@ public class GameUtils {
 		
 		
 		return cardSet;
+	}
+	public static void initUtils(String set){
+		getCardSet(set);
+		textureMap = new HashMap<>();
+		textureMap.put(TEXTURESTR_MARKET, TEXTURE_MARKET);
+		textureMap.put(TEXTURESTR_ADVENTURER, TEXTURE_ADVENTURER);
+		textureMap.put(TEXTURESTR_LABORATORY, TEXTURE_LABORATORY);
+		textureMap.put(TEXTURESTR_WITCH, TEXTURE_WITCH);
+		textureMap.put(TEXTURESTR_FESTIVAL, TEXTURE_FESTIVAL);
+		textureMap.put(TEXTURESTR_VILLAGE, TEXTURE_VILLAGE);
+		textureMap.put(TEXTURESTR_WOODCUTTER, TEXTURE_WOODCUTTER);
+		textureMap.put(TEXTURESTR_CHANCELLOR, TEXTURE_CHANCELLOR);
+		textureMap.put(TEXTURESTR_MOAT, TEXTURE_MOAT);
+		textureMap.put(TEXTURESTR_SMITHY, TEXTURE_SMITHY);
+		
+		textureMap.put(TEXTURESTR_COPPER, TEXTURE_COPPER);
+		textureMap.put(TEXTURESTR_SILVER, TEXTURE_SILVER);
+		textureMap.put(TEXTURESTR_GOLD, TEXTURE_GOLD);
+		
+		textureMap.put(TEXTURESTR_ESTATE, TEXTURE_ESTATE);
+		textureMap.put(TEXTURESTR_DUCHY, TEXTURE_DUCHY);
+		textureMap.put(TEXTURESTR_PROVINCE, TEXTURE_PROVINCE);
+		
+		textureMap.put(TEXTURESTR_CURSE, TEXTURE_CURSE);
+		
+		textureMap.put(UIConfig.cardBackStr, UIConfig.cardBack);
+	}
+
+	public static Texture getTexture(Card card) {
+		return textureMap.get(card.getTextureString());
+	}
+	public static void printHand(ArrayList<Card> ret) {
+		System.out.println("Hand: \n {");
+		for(Card c: ret)
+			System.out.print(c.getName() + "|");
+		System.out.print("}");
 	}
 	
 	

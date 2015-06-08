@@ -13,6 +13,11 @@ public class GameData implements Serializable {
 	private int player;
 	private int state;
 
+	public GameData(){
+		board = null;
+		player = 0;
+		state = 0;
+	}
 	public GameData(Board b, int turnPlayer, int state) {
 		this.board = b;
 		this.player = turnPlayer;

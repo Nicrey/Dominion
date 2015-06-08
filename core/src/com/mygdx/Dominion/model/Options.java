@@ -49,6 +49,8 @@ public class Options {
 
 	public static void setPlayers(ArrayList<Player> conplayers) {
 		Options.players = new ArrayList<Player>();
+		if(conplayers == null)
+			return;
 		Options.players.addAll(conplayers);
 		System.out.println(Options.players.size());
 	}

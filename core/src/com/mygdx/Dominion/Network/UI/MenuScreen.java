@@ -53,7 +53,7 @@ public class MenuScreen implements Screen {
 		
 		vg = new VerticalGroup();
 		vg.setSize(UIConfig.menuWidth, UIConfig.menuHeight);
-		ip = new TextField("IP", skin);
+		ip = new TextField("127.0.0.1", skin);
 		name = new TextField("Playername" , skin);
 		status = new Label("Not Connected", skin);
 		startServer = new TextButton("Start Server" , skin);
@@ -68,8 +68,7 @@ public class MenuScreen implements Screen {
 		stage.addActor(vg);
 		startServer.addListener(new ClickListener(){
 
-			private boolean serverStarted=false;
-
+			
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 

@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -33,6 +34,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.Dominion.Controller.DominionController;
 import com.mygdx.Dominion.UI.model.CustomLabel;
 import com.mygdx.Dominion.UI.model.DeckUI;
@@ -80,7 +82,11 @@ public class DominionUI extends Game implements Screen{
 	private DominionGame application;
 
 	private final int viewIndex;
-	
+	private FitViewport viewport;
+	private Rectangle boardRect;
+	private Rectangle buyRect;
+	private FPSLogger logger;
+	private Vector2 resultVector; 
 	
 	public DominionUI(int index, DominionGame application){
 		this.viewIndex = index;
@@ -93,18 +99,21 @@ public class DominionUI extends Game implements Screen{
 	}
 	@Override
 	public void create() {
-		
+		resultVector = new Vector2();
+		Gdx.graphics.setDisplayMode((int)UIConfig.width, (int)UIConfig.height, false);
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		batch = new SpriteBatch();
 		shapeRenderer = new ShapeRenderer();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, UIConfig.width, UIConfig.height);
-
+		
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
 
 		// Labels
 		createLabels();
+		playerLabel.setText(game.getGameData().getPlayer(viewIndex).getName());
+		
 		// Buttons
 		createButtons();
 		// BuyArea
@@ -117,19 +126,35 @@ public class DominionUI extends Game implements Screen{
 		handCards = new ArrayList<Polygon>();
 		activeCard = null;
 
+
+		boardRect = new Rectangle();
+		boardRect.x = UIConfig.boardX;
+		boardRect.y = UIConfig.boardY;
+		boardRect.height = UIConfig.boardHeight;
+		boardRect.width = UIConfig.boardWidth;
+		
+		buyRect = new Rectangle();
+		buyRect.x = UIConfig.buyX;
+		buyRect.y = UIConfig.buyY;
+		buyRect.height = UIConfig.buyHeight;
+		buyRect.width = UIConfig.buyWidth;
+		
+		logger = new FPSLogger();
 	}
 
 	@Override
 	public void render() {
-		rendering = true;
-		buyArea.fire(new Event());
-	
 		
-		shapeRenderer.setAutoShapeType(true);
-		updateData();
+		rendering = true;
+		logger.log();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+		
+		buyArea.fire(new Event());
+	
+		shapeRenderer.setAutoShapeType(true);
+		updateData();
+		
 		batch.begin();
 		drawCardsOnBoard();
 		if (showWindow == null)
@@ -139,17 +164,8 @@ public class DominionUI extends Game implements Screen{
 
 		batch.end();
 
-		Rectangle boardRect = new Rectangle();
-		boardRect.x = UIConfig.boardX;
-		boardRect.y = UIConfig.boardY;
-		boardRect.height = UIConfig.boardHeight;
-		boardRect.width = UIConfig.boardWidth;
 
-		Rectangle buyRect = new Rectangle();
-		buyRect.x = UIConfig.buyX;
-		buyRect.y = UIConfig.buyY;
-		buyRect.height = UIConfig.buyHeight;
-		buyRect.width = UIConfig.buyWidth;
+	
 
 		shapeRenderer.begin();
 		shapeRenderer.rect(boardRect.x, boardRect.y, boardRect.width,
@@ -216,7 +232,6 @@ public class DominionUI extends Game implements Screen{
 	private void updateData() {
 
 		game.update();
-		playerLabel.setText(game.getTurnPlayer().getName());
 		actionLabel.setText("Aktionen: " + game.getTurnPlayer().getActions());
 		buyLabel.setText("Transaktionen: " + game.getTurnPlayer().getBuys());
 		goldLabel.setText("Gold: " + game.getTurnPlayer().getGold());
@@ -395,6 +410,9 @@ public class DominionUI extends Game implements Screen{
 	private void drawBorder(Card card, float x, float y, float ox, float oy,
 			float cwidth, float cheight, float turnangle) {
 
+		if(viewIndex != game.getTurnPlayerIndex())
+			return;
+		
 		if (!game.isCardPlayable(card)) {
 			shapeRenderer.begin(ShapeType.Filled);
 			shapeRenderer.setColor(UIConfig.wrongColor);
@@ -435,6 +453,7 @@ public class DominionUI extends Game implements Screen{
 				pol.setRotation((float) (-(UIConfig.turnAngle / Math.sqrt(hand
 						.size())) * (i - (hand.size() / 2))));
 			}
+			
 
 			handCards.add(pol);
 
@@ -504,8 +523,8 @@ public class DominionUI extends Game implements Screen{
 		boardRect.y = UIConfig.boardY;
 		boardRect.height = UIConfig.boardHeight;
 		boardRect.width = UIConfig.boardWidth;
-		return boardRect.contains(activeCard.getCardRect().getCenter(
-				new Vector2()));
+		return boardRect.contains(activeCard.getCardRect().getCenter(resultVector
+				));
 	}
 
 	private void putActiveCardOnBoard() {
@@ -514,8 +533,7 @@ public class DominionUI extends Game implements Screen{
 	}
 
 	private ArrayList<Card> getActualHand() {
-		ArrayList<Card> ret = (ArrayList<Card>) game.getGameData().getPlayer(viewIndex).getHand()
-				.clone();
+		ArrayList<Card> ret =(ArrayList<Card>) game.getGameData().getPlayer(viewIndex).getHand().clone();
 		if (activeCard != null)
 			ret.remove(activeCard.getCard());
 		return ret;
@@ -580,6 +598,7 @@ public class DominionUI extends Game implements Screen{
 
 	private void createBuyArea() {
 		Board b = game.getGameData();
+		System.out.println("Buy Area Size " +b.getBuyableActionCards().size() + "\n");
 		final IntegerCardList v = b.getBuyableVictoryCards();
 		IntegerCardList t = b.getBuyableTreasureCards();
 		IntegerCardList a = b.getBuyableActionCards();
@@ -653,7 +672,7 @@ public class DominionUI extends Game implements Screen{
 				TextButton buy = new TextButton("Kaufen", skin);
 				CustomLabel remainingCards = new CustomLabel(
 						a.getRemainingCards(i + k * 4) + "", skin,
-						game.getGameData(), c);
+						game, c);
 				
 				
 				
@@ -759,7 +778,7 @@ public class DominionUI extends Game implements Screen{
 
 			TextButton buy = new TextButton("Kaufen", skin);
 			CustomLabel remainingCards = new CustomLabel(t.getRemainingCards(i)
-					+ "", skin, game.getGameData(), c);
+					+ "", skin, game, c);
 			buy.addListener(new ClickListener() {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
@@ -867,7 +886,7 @@ public class DominionUI extends Game implements Screen{
 			TextButton buy = new TextButton("Kaufen", skin);
 
 			CustomLabel remainingCards = new CustomLabel(game.getGameData()
-					.getRemainingCards(c) + "", skin, game.getGameData(), c);
+					.getRemainingCards(c) + "", skin, game, c);
 			
 			buy.addListener(new ClickListener() {
 				@Override
@@ -1043,6 +1062,7 @@ public class DominionUI extends Game implements Screen{
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
+		
 		this.create();
 	}
 

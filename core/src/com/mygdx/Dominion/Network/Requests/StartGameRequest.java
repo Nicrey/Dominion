@@ -8,12 +8,14 @@ import com.mygdx.Dominion.model.Player;
 public class StartGameRequest {
 
 	
-	public final ArrayList<Player> players;
 	public final int index;
 	public final GameData gameData;
 	
-	public StartGameRequest(ArrayList<Player> players, int index, GameData gameData){
-		this.players = players;
+	public StartGameRequest(){
+		index = 0;
+		gameData = null;
+	}
+	public StartGameRequest( int index, GameData gameData){
 		this.index = index;
 		this.gameData = gameData;
 	}

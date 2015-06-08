@@ -21,7 +21,8 @@ public class DominionServerController {
 	DominionServerEffectParser parser;
 
 	public DominionServerController() {
-		game = new Board();
+
+		game = new Board("default");
 		currentPlayer = 0;
 		state = 0;
 		resetPlayerAttributes();
@@ -55,26 +56,25 @@ public class DominionServerController {
 		getTurnPlayer().addCardToGraveyard(new Card(c));
 		game.buyCard(c);
 
-		if (game.isProvincesEmpty() || game.getEmptiedCardStacks() >= 3)
-			System.out.println("ENDE!");
-
+		
 	}
 
-	public void cardPlayedEvent(Card c) {
+	public boolean cardPlayedEvent(Card c) {
 
 		if (state == ACTIONCARDPHASE
 				&& c.getType() != GameUtils.CARDTYPE_ACTION) {
-			return;
+			return false;
 		}
 		if (state == TREASURECARDPHASE
 				&& c.getType() != GameUtils.CARDTYPE_TREASURE) {
-			return;
+			return false;
 		}
 		if (getTurnPlayer().getActions() <= 0 && state == ACTIONCARDPHASE) {
-			return;
+			return false;
 		}
 
-		getTurnPlayer().playCard(c);
+		if(!getTurnPlayer().playCard(c))
+			return false;
 		game.addCardToBoard(c);
 
 		parser.resolveEffect(c);
@@ -84,12 +84,13 @@ public class DominionServerController {
 
 		if (getTurnPlayer().getActions() == 0 && state == ACTIONCARDPHASE
 				&& !EffectParser.givesAdditionalActions(c.getEffect())) {
-			updateState();
+			updateStateEvent();
 		}
+		return true;
 
 	}
 
-	public void endTurnEvent() {
+	public boolean endTurnEvent() {
 
 		getTurnPlayer().discardCards();
 
@@ -105,9 +106,13 @@ public class DominionServerController {
 		state = ACTIONCARDPHASE;
 
 		resetPlayerAttributes();
+		if(game.isGameOver()){
+			return true;
+		}
+		return false;
 	}
 
-	private void updateState() {
+	public void updateStateEvent() {
 		if (state == ACTIONCARDPHASE) {
 			state = TREASURECARDPHASE;
 			return;
@@ -153,6 +158,19 @@ public class DominionServerController {
 			return;
 		p.addCurse();
 		game.reduceCurses();
+	}
+
+	public int getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void playTreasuresEvent() {
+		ArrayList<Card> treasures;
+		treasures = getTurnPlayer().getTreasureCardsInHand();
+		for(Card c: treasures)
+		{
+			cardPlayedEvent(c);
+		}
 	}
 
 

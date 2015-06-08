@@ -95,7 +95,7 @@ public class Player {
 	{
 		for(Card c : hand)
 		{
-			if( c == card)
+			if( c.equals(card))
 			{
 				hand.remove(card);
 				return true;
@@ -287,6 +287,27 @@ public class Player {
 
 	public ArrayList<Card> getGraveyard() {
 		return graveyard;
+	}
+
+	public void clear() {
+		actions = 0;
+		gold = 0;
+		buys = 0;
+		hand = new ArrayList<Card>();
+		graveyard = new ArrayList<Card>();
+		deck = new ArrayList<Card>();
+	}
+
+	public ArrayList<Card> getVictoryCards() {
+		ArrayList<Card> ret = new ArrayList<Card>();
+		ArrayList<Card> completeDeck = (ArrayList<Card>) hand.clone();
+		completeDeck.addAll(deck);
+		completeDeck.addAll(graveyard);
+		for(Card c : completeDeck){
+			if(c.getType() == GameUtils.CARDTYPE_VICTORY || c.getType() == GameUtils.CARDTYPE_CURSE)
+				ret.add(c);
+		}
+		return ret;
 	}
 
 

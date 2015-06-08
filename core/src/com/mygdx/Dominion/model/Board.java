@@ -2,6 +2,8 @@ package com.mygdx.Dominion.model;
 
 import java.util.ArrayList;
 
+import com.mygdx.Dominion.Controller.EffectParser;
+
 public class Board {
 
 	private ArrayList<Player> players;
@@ -17,10 +19,20 @@ public class Board {
 
 	private ArrayList<Card> completeCardSet;
 	private int numberOfBuyableActionCards = 10;
-	
-	public Board()
-	{
+	private Object getGameEndPoints;
+
+	public Board(){
 		
+		players = new ArrayList<Player>();
+		buyableActionCards = new IntegerCardList();
+		buyableVictoryCards = new IntegerCardList();
+		buyableTreasureCards = new IntegerCardList();
+		completeCardSet = new ArrayList<Card> ();
+		playedCards = new ArrayList<Card>();
+	}
+	public Board(String set)
+	{
+		GameUtils.initUtils(set);
 		players = new ArrayList<Player>();
 		buyableActionCards = new IntegerCardList();
 		buyableVictoryCards = new IntegerCardList();
@@ -34,7 +46,7 @@ public class Board {
 		assert(Options.getInstance().getPlayerCount() == players.size());
 		
 		//Create Cards
-		completeCardSet.addAll(GameUtils.getCardSet("default"));
+		completeCardSet.addAll(GameUtils.cardSet);
 		
 		//Create Buyable Cards
 		createBuyableCards();
@@ -52,8 +64,10 @@ public class Board {
 
 	private void initializeDecksForPlayers() {
 		
+		
 		for(Player p : players)
 		{
+			p.clear();
 			for(int i = 0; i < 7; i++)
 			{
 				p.addCardToGraveyard(new Card(GameUtils.CARD_COPPER));
@@ -69,7 +83,7 @@ public class Board {
 
 	private void createBuyableCards() {
 		ArrayList<Card> randCards = new ArrayList<Card>();
-		
+				
 		for(Card c: completeCardSet)
 		{
 			if(c.getType() == GameUtils.CARDTYPE_VICTORY )
@@ -203,4 +217,46 @@ public class Board {
 		if(buyableCurseCards == 0)
 			this.emptiedCardStacks++;
 	}
+	public boolean isGameOver() {
+		if (isProvincesEmpty() || getEmptiedCardStacks() >= 3)
+			return true;
+		return false;
+	
+	}
+	
+	public ArrayList<ArrayList<Card>> getGameEndVictoryCards(){
+		ArrayList<ArrayList<Card>> victoryCards = new ArrayList<ArrayList<Card>>();
+		for(Player p: players){
+			victoryCards.add(p.getVictoryCards());
+		}
+		return victoryCards;
+	}
+	public Player getWinner() {
+		int winnerIndex = -1;
+		int max = 0;
+		ArrayList<Integer> points = getGameEndPoints();
+		for(int i = 0; i < points.size(); i++){
+			if(points.get(i)>max){
+				winnerIndex = i;
+				max = points.get(i);
+			}
+		}
+		return getPlayer(winnerIndex);
+		
+	}
+	
+	public ArrayList<Integer> getGameEndPoints(){
+		ArrayList<Integer> points = new ArrayList<Integer>();
+		int playerPoints = 0;
+		for(ArrayList<Card> vicCards :  getGameEndVictoryCards()){
+			playerPoints = 0;
+			for(Card c : vicCards){
+				playerPoints = playerPoints + EffectParser.parseVictoryCard(c);
+			}
+			points.add(new Integer(playerPoints));
+		}
+		return points;
+	}
+	
+	
 }

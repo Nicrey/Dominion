@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.Dominion.Controller.DominionController;
 import com.mygdx.Dominion.UI.UIConfig;
 import com.mygdx.Dominion.model.Card;
+import com.mygdx.Dominion.model.Player;
 
 public class DeckUI extends Button {
 
@@ -21,6 +22,7 @@ public class DeckUI extends Button {
 	Label decksize;
 	Label graveyardsize;
 	Skin skin;
+	int index;
 	private float padding =  UIConfig.coinSize/2;
 	private float ypadding = UIConfig.coinSize;
 	private float bgpad = UIConfig.coinSize/2;
@@ -31,6 +33,7 @@ public class DeckUI extends Button {
 		this.skin = skin;
 		this.game = game;
 		decksize = new Label("",skin);
+		index= game.getControllerIndex();
 		
 		decksize.setPosition(UIConfig.deckX+padding, UIConfig.deckY +ypadding);
 		this.decksize.setColor(UIConfig.labelColor);
@@ -52,17 +55,17 @@ public class DeckUI extends Button {
 	}
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		Player p = game.getGameData().getPlayer(index);
 		
-		
-		decksize.setText(game.getTurnPlayer().getDeckSize() + "");
-		ArrayList<Card> grave = game.getTurnPlayer().getGraveyard();
+		decksize.setText(p.getDeckSize() + "");
+		ArrayList<Card> grave = p.getGraveyard();
 		graveyardsize.setText(grave.size() + "");
 		if(grave.size() < 10)
 			graveyardsize.setPosition(UIConfig.graveyardX+padding+fontoff/2, UIConfig.deckY + ypadding);
 		else
 			graveyardsize.setPosition(UIConfig.graveyardX+padding-fontoff/4, UIConfig.deckY + ypadding);
 		
-		if(game.getTurnPlayer().getDeckSize() < 10)
+		if(p.getDeckSize() < 10)
 			decksize.setPosition(UIConfig.deckX+padding+fontoff/2, UIConfig.deckY +ypadding);
 		else
 			decksize.setPosition(UIConfig.deckX+padding-fontoff/4, UIConfig.deckY +ypadding);
@@ -86,7 +89,7 @@ public class DeckUI extends Button {
 	
 	
 	
-		for(i = 0; i < game.getTurnPlayer().getDeckSize(); i++)
+		for(i = 0; i < p.getDeckSize(); i++)
 			if(i > 30)
 				break;
 			else

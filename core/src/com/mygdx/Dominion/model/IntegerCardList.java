@@ -1,9 +1,6 @@
 package com.mygdx.Dominion.model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.function.Consumer;
 
 public class IntegerCardList {
 
@@ -48,9 +45,18 @@ public class IntegerCardList {
 	
 	public void reduceCard(Card c)
 	{
-		int i = integerList.get(cardList.indexOf(c));
-		i--;
-		integerList.set(cardList.indexOf(c), i);
+		int j = 0;
+		int i;
+		for( i = 0; i < cardList.size(); i++)
+			if(cardList.get(i).getName().equals(c.getName()))
+			{
+				j = integerList.get(i);
+				break;
+			}
+		
+		
+		j--;
+		integerList.set(i, j);
 	}
 	
 	public Card getCard(int i)
@@ -69,7 +75,11 @@ public class IntegerCardList {
 	
 	public int getRemainingCards(Card c)
 	{
-		return integerList.get(cardList.indexOf(c));
+		for(int i = 0; i < cardList.size(); i++)
+			if(cardList.get(i).getName().equals(c.getName()))
+				return integerList.get(i);
+		
+		return -1;
 	}
 
 	

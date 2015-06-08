@@ -101,7 +101,7 @@ public class LobbyScreenServer implements Screen {
 	}
 
 	public void startServer() throws IOException {
-		server = new Server();
+		server = new Server(65536,8192);
 		server.start();
 		
 		server.bind(54555, 54777);

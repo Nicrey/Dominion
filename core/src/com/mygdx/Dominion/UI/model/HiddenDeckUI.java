@@ -28,6 +28,7 @@ public class HiddenDeckUI extends Button {
 	Skin skin;
 	int index;
 	Player player;
+	private int playerIndex;
 	
 	public HiddenDeckUI(DominionController game,Skin skin , int playerIndex, int index )
 	{
@@ -64,9 +65,9 @@ public class HiddenDeckUI extends Button {
 		bg1.setSize(UIConfig.coinSize*1f, UIConfig.coinSize*1f);
 		bg2.setSize(UIConfig.coinSize*1f, UIConfig.coinSize*1f);
 		bg3.setSize(UIConfig.coinSize*1f, UIConfig.coinSize*1f);
-		
-		this.index = index;
+		this.playerIndex = playerIndex;
 		this.player = game.getGameData().getPlayer(playerIndex+1);
+		this.index = index;
 		playername = new Label(player.getName()+ "",skin);
 		playername.setPosition(UIConfig.hiddenPlayerX,UIConfig.hiddenDeckY + index * UIConfig.hiddenDeckHeight +index *UIConfig.hiddenDeckStep );
 		
@@ -81,12 +82,12 @@ public class HiddenDeckUI extends Button {
 	}
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		
+		this.player = game.getGameData().getPlayer(playerIndex+1);
 		
 		decksize.setText(player.getDeckSize() + "");
 		ArrayList<Card> grave = player.getGraveyard();
 		graveyardsize.setText(grave.size() + "");
-		if(player == game.getTurnPlayer())
+		if(player.getName() == game.getTurnPlayer().getName())
 			playername.setColor(UIConfig.turnOverColor);
 		else
 			playername.setColor(Color.WHITE);
