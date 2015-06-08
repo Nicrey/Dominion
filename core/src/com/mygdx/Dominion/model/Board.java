@@ -56,7 +56,7 @@ public class Board {
 		//initial card Draw
 		for(Player p : players)
 		{
-			p.drawCards(10);
+			p.drawCards(5);
 		}
 		
 	}

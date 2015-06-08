@@ -51,6 +51,7 @@ public class ServerGameScreen implements Screen{
 		log = new TextArea("Game Started",skin);
 		logPane = new ScrollPane(log);
 		table.add(header);
+		table.row();
 		table.add(logPane).width(250f).height(250f);
 		table.row();
 		
@@ -72,7 +73,7 @@ public class ServerGameScreen implements Screen{
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		log.appendText(text);
+		log.appendText(text + "\n");
 		text = "";
 		stage.act();
 		stage.draw();

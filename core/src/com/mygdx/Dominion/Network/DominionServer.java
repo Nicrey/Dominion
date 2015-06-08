@@ -50,7 +50,9 @@ public class DominionServer {
 			
 			
 			if(object instanceof TurnEndRequest){
+				
 				TurnEndRequest request = (TurnEndRequest) object;
+				ui.log("Turn End Request for Player:" + controller.getBoard().getPlayer(request.getIndex()).getName());
 				if(request.getIndex() != controller.getCurrentPlayer())
 					return;
 				if(controller.endTurnEvent()){
@@ -66,17 +68,18 @@ public class DominionServer {
 			
 			if(object instanceof CardPlayedRequest){
 				CardPlayedRequest request = (CardPlayedRequest) object;
+				ui.log("Card Played Request for Player:" + controller.getBoard().getPlayer(request.getIndex()).getName() + " with Card: " + request.getCard().getName());
 				if(request.getIndex() != controller.getCurrentPlayer())
 					return;
 				if(request.getCardIndex() > controller.getTurnPlayer().getHandSize())
 				{
-					ui.log("Hand is not the same on Client and Server");
+					ui.log("Hand is not the same on Client and Server. Hand to large");
 					server.sendToAllTCP(controller.getGameData());
 					return;
 				}
 				Card actualCard = controller.getTurnPlayer().getHand().get(request.getCardIndex());
 				if(!actualCard.getName().equals( request.getCard().getName())){
-					ui.log("Hand is not the same on Client and Server");
+					ui.log("Hand is not the same on Client and Server. Card not on right positions");
 					server.sendToAllTCP(controller.getGameData());
 					return;
 				}
@@ -92,6 +95,7 @@ public class DominionServer {
 			
 			if(object instanceof CardBoughtRequest){
 				CardBoughtRequest request = (CardBoughtRequest) object;
+				ui.log("Card Bought Request for Player:" + controller.getBoard().getPlayer(request.getIndex()).getName() + " with Card: " + request.getCard().getName());		
 				if(request.getIndex() != controller.getCurrentPlayer())
 					return;
 				controller.cardBoughtEvent(request.getCard());
@@ -103,6 +107,7 @@ public class DominionServer {
 			
 			if(object instanceof UpdateStateRequest){
 				UpdateStateRequest request = (UpdateStateRequest) object;
+				ui.log("Update State Request for Player:" + controller.getBoard().getPlayer(request.getIndex()).getName());
 				if(request.getIndex() != controller.getCurrentPlayer())
 					return;
 				controller.updateStateEvent();
@@ -113,6 +118,7 @@ public class DominionServer {
 			
 			if(object instanceof PlayTreasuresRequest){
 				PlayTreasuresRequest request = (PlayTreasuresRequest) object;
+				ui.log("Play Treasure Request for Player:" + controller.getBoard().getPlayer(request.getIndex()).getName());
 				if(request.getIndex() != controller.getCurrentPlayer())
 					return;
 				controller.playTreasuresEvent();
