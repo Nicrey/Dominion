@@ -1078,5 +1078,9 @@ public class DominionUI extends Game implements Screen{
 		// TODO Auto-generated method stub
 		
 	}
+	public DominionGame getApplication() {
+		// TODO Auto-generated method stub
+		return application;
+	}
 
 }

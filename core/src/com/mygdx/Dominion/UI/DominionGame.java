@@ -9,10 +9,12 @@ import com.esotericsoftware.kryonet.Server;
 import com.mygdx.Dominion.Network.DominionClient;
 import com.mygdx.Dominion.Network.DominionServer;
 import com.mygdx.Dominion.Network.Controller.DominionServerController;
+import com.mygdx.Dominion.Network.Requests.GameOverResponse;
 import com.mygdx.Dominion.Network.UI.LobbyScreenClient;
 import com.mygdx.Dominion.Network.UI.LobbyScreenServer;
 import com.mygdx.Dominion.Network.UI.MenuScreen;
 import com.mygdx.Dominion.Network.UI.ServerGameScreen;
+import com.mygdx.Dominion.Network.UI.WinScreen;
 import com.mygdx.Dominion.model.GameData;
 import com.mygdx.Dominion.model.Options;
 import com.mygdx.Dominion.model.Player;
@@ -81,6 +83,11 @@ public class DominionGame extends Game {
 		
 		this.setScreen(ui);
 		
+	}
+
+	public void showGameEndScreen(GameOverResponse object) {
+		WinScreen endScreen = new WinScreen(object);
+		this.setScreen(endScreen);
 	}
 
 

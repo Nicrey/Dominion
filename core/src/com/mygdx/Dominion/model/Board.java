@@ -85,7 +85,7 @@ public class Board {
 				
 		for(Card c: completeCardSet)
 		{
-			if(c.getType() == GameUtils.CARDTYPE_VICTORY )
+			if(c.getType() == GameUtils.CARDTYPE_VICTORY && !(c.getName().equals( GameUtils.NAME_GARDENS)))
 			{
 				buyableVictoryCards.addCard(c);
 			}
@@ -93,7 +93,7 @@ public class Board {
 			{
 				buyableTreasureCards.addCard(c);
 			}
-			if(c.getType() == GameUtils.CARDTYPE_ACTION)
+			if(c.getType() == GameUtils.CARDTYPE_ACTION || c.getName().equals(GameUtils.NAME_GARDENS))
 			{
 				randCards.add(c);
 			}
@@ -247,12 +247,14 @@ public class Board {
 	public ArrayList<Integer> getGameEndPoints(){
 		ArrayList<Integer> points = new ArrayList<Integer>();
 		int playerPoints = 0;
+		int index = 0;
 		for(ArrayList<Card> vicCards :  getGameEndVictoryCards()){
 			playerPoints = 0;
 			for(Card c : vicCards){
-				playerPoints = playerPoints + EffectParser.parseVictoryCard(c);
+				playerPoints = playerPoints + EffectParser.parseVictoryCard(c, getPlayer(index));
 			}
 			points.add(new Integer(playerPoints));
+			index++;
 		}
 		return points;
 	}

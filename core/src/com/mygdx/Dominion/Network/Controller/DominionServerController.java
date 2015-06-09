@@ -32,8 +32,8 @@ public class DominionServerController {
 
 	private void resetPlayerAttributes() {
 		getTurnPlayer().setActions(1);
-		getTurnPlayer().setGold(0);
-		getTurnPlayer().setBuys(1);
+		getTurnPlayer().setGold(800);
+		getTurnPlayer().setBuys(100);
 	}
 
 	public Player getTurnPlayer() {

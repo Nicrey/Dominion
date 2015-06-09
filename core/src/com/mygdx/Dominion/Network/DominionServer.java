@@ -58,7 +58,10 @@ public class DominionServer {
 				if(controller.endTurnEvent()){
 					GameOverResponse response = new GameOverResponse(controller.getBoard().getGameEndVictoryCards(),
 																		controller.getBoard().getWinner(),
-																		controller.getBoard().getGameEndPoints());
+																		controller.getBoard().getGameEndPoints(),
+																		controller.getBoard().getPlayers());
+					ui.log("Game is over! Winner -> " + response.getWinner().getName());
+					server.sendToAllTCP(response);
 				}else{
 					TurnEndResponse response = new TurnEndResponse(controller.getGameData());
 					ui.log("Turn End for Player:" + controller.getBoard().getPlayer(request.getIndex()).getName());

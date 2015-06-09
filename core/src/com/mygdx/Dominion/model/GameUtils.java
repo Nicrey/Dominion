@@ -29,11 +29,11 @@ public class GameUtils {
 
 	//Action Cards
 	//6 cost default set
-	public static final String NAME_ADVENTURER = "Abenteurer";
+	public static final String NAME_ADVENTURER = "Abenteurer"; 
 	//5 cost default set
 	public static final String NAME_MARKET = "Markt";
 	public static final String NAME_WITCH = "Hexe";
-	public static final String NAME_FESTIVAL = "Jahrmark";
+	public static final String NAME_FESTIVAL = "Jahrmarkt";
 	public static final String NAME_LABORATORY = "Laboratorium";
 	public static final String NAME_MINE = "Mine";
 	public static final String NAME_LIBRARY = "Bibliothek";
@@ -152,7 +152,8 @@ public class GameUtils {
 	public static final String TEXTURESTR_MOAT = ("dominion_textures/texture_moat.jpg");
 	public static final String TEXTURESTR_SMITHY = ("dominion_textures/texture_smithy.jpg");
 	public static final String TEXTURESTR_ADVENTURER = ("dominion_textures/texture_adventurer.jpg");
-	
+	public static final String TEXTURESTR_GARDENS = ("dominion_textures/texture_garden.jpg");
+	public static final String TEXTURESTR_COUNCILROOM = ("dominion_textures/texture_councilroom.jpg");
 	//Treasure Cards
 	public static final String TEXTURESTR_COPPER = ("dominion_textures/texture_copper.jpg");
 	public static final String TEXTURESTR_SILVER = ("dominion_textures/texture_silver.jpg");
@@ -175,6 +176,8 @@ public class GameUtils {
 	public static final Texture TEXTURE_MOAT = new Texture("dominion_textures/texture_moat.jpg");
 	public static final Texture TEXTURE_SMITHY = new Texture("dominion_textures/texture_smithy.jpg");
 	public static final Texture TEXTURE_ADVENTURER = new Texture("dominion_textures/texture_adventurer.jpg");
+	public static final Texture TEXTURE_GARDENS = new Texture("dominion_textures/texture_garden.jpg");
+	public static final Texture TEXTURE_COUNCILROOM = new Texture("dominion_textures/texture_councilroom.jpg");
 	
 	//Treasure Cards
 	public static final Texture TEXTURE_COPPER = new Texture("dominion_textures/texture_copper.jpg");
@@ -204,6 +207,8 @@ public class GameUtils {
 	public static final int COST_MOAT = 2;
 	public static final int COST_SMITHY = 4;
 	public static final int COST_ADVENTURER = 6;
+	public static final int COST_GARDEN = 4;
+	public static final int COST_COUNCILROOM = 5;
 	//Treasure Cards
 	public static final int COST_COPPER = 0;
 	public static final int COST_SILVER = 3;
@@ -228,6 +233,8 @@ public class GameUtils {
 	public static final Card CARD_MOAT = new Card(NAME_MOAT, TEXTURESTR_MOAT,COST_MOAT,CARDTYPE_ACTION, EFFECT_MOAT);
 	public static final Card CARD_SMITHY = new Card(NAME_SMITHY,TEXTURESTR_SMITHY, COST_SMITHY, CARDTYPE_ACTION, EFFECT_SMITHY);
 	public static final Card CARD_ADVENTURER = new Card(NAME_ADVENTURER, TEXTURESTR_ADVENTURER, COST_ADVENTURER, CARDTYPE_ACTION, EFFECT_ADVENTURER);
+	public static final Card CARD_GARDENS = new Card(NAME_GARDENS, TEXTURESTR_GARDENS, COST_GARDEN, CARDTYPE_VICTORY, EFFECT_GARDENS);
+	public static final Card CARD_COUNCILROOM = new Card(NAME_COUNCILROOM, TEXTURESTR_COUNCILROOM, COST_COUNCILROOM, CARDTYPE_ACTION, EFFECT_COUNCILROOM);
 	
 	//Treasure Cards
 	public static final Card CARD_COPPER = new Card(NAME_COPPER, TEXTURESTR_COPPER, COST_COPPER, CARDTYPE_TREASURE, EFFECT_COPPER);
@@ -272,7 +279,9 @@ public class GameUtils {
 			cardSet.add(CARD_CHANCELLOR);
 			cardSet.add(CARD_MOAT);
 			cardSet.add(CARD_SMITHY);
-			cardSet.add(CARD_ADVENTURER);		
+			cardSet.add(CARD_ADVENTURER);	
+			cardSet.add(CARD_GARDENS);
+			cardSet.add(CARD_COUNCILROOM);
 		}
 		
 		
@@ -292,6 +301,8 @@ public class GameUtils {
 		textureMap.put(TEXTURESTR_CHANCELLOR, TEXTURE_CHANCELLOR);
 		textureMap.put(TEXTURESTR_MOAT, TEXTURE_MOAT);
 		textureMap.put(TEXTURESTR_SMITHY, TEXTURE_SMITHY);
+		textureMap.put(TEXTURESTR_GARDENS, TEXTURE_GARDENS);
+		textureMap.put(TEXTURESTR_COUNCILROOM, TEXTURE_GARDENS);
 		
 		textureMap.put(TEXTURESTR_COPPER, TEXTURE_COPPER);
 		textureMap.put(TEXTURESTR_SILVER, TEXTURE_SILVER);

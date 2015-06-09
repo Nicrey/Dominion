@@ -280,12 +280,15 @@ public class EffectParser implements Runnable {
 		}
 	}
 
-	public static int parseVictoryCard(Card c) {
+	public static int parseVictoryCard(Card c, Player p) {
 		for (String s : c.getEffect().split("\\|")) {
 			s = formatString(s);
 			if(s.startsWith("v")){
 				String[] parts = s.split(",");
 				return Integer.parseInt(parts[1]);
+			}
+			if(s.startsWith("grd")){
+				return p.getCompleteDeckSize()/10;
 			}
 		}
 		return 0;

@@ -8,6 +8,7 @@ import com.mygdx.Dominion.Network.Requests.CardBoughtRequest;
 import com.mygdx.Dominion.Network.Requests.CardBoughtResponse;
 import com.mygdx.Dominion.Network.Requests.CardPlayedRequest;
 import com.mygdx.Dominion.Network.Requests.CardPlayedResponse;
+import com.mygdx.Dominion.Network.Requests.GameOverResponse;
 import com.mygdx.Dominion.Network.Requests.PlayTreasuresRequest;
 import com.mygdx.Dominion.Network.Requests.PlayTreasuresResponse;
 import com.mygdx.Dominion.Network.Requests.TurnEndRequest;
@@ -109,6 +110,10 @@ public class DominionClient {
 			if(object instanceof GameData){
 				controller.setNewGameData((GameData)object);
 				controller.updateGameData();
+			}
+			
+			if(object instanceof GameOverResponse){
+				controller.getView().getApplication().showGameEndScreen((GameOverResponse) object);
 			}
 		}
 	}
