@@ -10,6 +10,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = (int) UIConfig.menuWidth;
 		config.height = (int) UIConfig.menuHeight;
+		config.resizable = false;
 		new LwjglApplication(new DominionGame(), config);
 		
 		
